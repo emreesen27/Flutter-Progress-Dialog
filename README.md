@@ -1,14 +1,72 @@
-# sn_progress_dialog
+# Sn Progress Dialog
 
 Progress dialog package for flutter
 
 ## Getting Started
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+You must add the library as a dependency to your project.
+```yaml
+dependencies:
+ sn_progress_dialog: ^0.0.1
+```
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+You should then run `flutter packages get`
+
+Now in your Dart code, you can use:
+
+```dart
+import 'package:sn_progress_dialog/sn_progress_dialog.dart';
+```
+
+## Usage Example
+
+Create Progress Dialog
+
+```dart
+ProgressDialog pd = ProgressDialog(context: context);
+```
+Set options
+
+```dart
+pd.show(max: 100, msg: 'File Downloading...');
+```
+
+You don't need to update state, just pass the value.
+ 
+```dart
+pd.update(prrogress value);
+```
+
+### Other Properties
+
+Dialog closes automatically when its progress status equals the max value.
+Use this method if you want to turn it close manually.
+
+```dart
+pd.close();
+```
+Returns whether the dialog box is open.
+
+```dart
+pd.isOpen();
+```
+
+### Example Use With Dio
+
+```dart 
+var dio = new Dio();
+ProgressDialog pd = ProgressDialog(context: context);
+pd.show(max: 100, msg: 'File Downloading...');
+await dio.download(
+  'your download_url',
+  'your path',
+  onReceiveProgress: (rec, total) {
+    int progress = (((rec / total) * 100).toInt());
+    pd.update(progress);
+  },
+);
+```
+
+
+
+
