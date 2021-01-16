@@ -6,18 +6,27 @@ enum ValuePosition {
 }
 
 class ProgressDialog {
+  /// [_progress] listens to the value of progress.
+  //  not directly accessible
   final ValueNotifier _progress = ValueNotifier(0);
+
+  /// shows whether the dialog is open.
+  //  not directly accessible
   bool _dialogIsOpen = false;
+
+  // can only be accessed with the constructor.
   BuildContext _context;
 
   ProgressDialog({@required context}) {
     this._context = context;
   }
 
+  //  Pass the new value to this method to update the status.
   void update(int value) {
     _progress.value = value;
   }
 
+  //  closes the progress dialog.
   void close() {
     if (_dialogIsOpen) {
       Navigator.pop(_context);
@@ -25,14 +34,23 @@ class ProgressDialog {
     }
   }
 
+  //  Returns whether the dialog box is open.
   bool isOpen() {
     return _dialogIsOpen;
   }
 
+  /// [max] assign the maximum value of the upload. @required
+  //  Dialog closes automatically when its progress status equals the max value.
+
+  /// [msg] show a message @required
+
+  /// [ValuePosition] location of progress value @not required
+  // center or right  default: right
+
   show({
     @required int max,
     @required String msg,
-    Color backgroundColor: Colors.white70,
+    Color backgroundColor: Colors.white,
     Color progressValueColor: Colors.blueAccent,
     double msgFontSize: 17.0,
     Color msgColor: Colors.black87,
