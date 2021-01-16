@@ -28,7 +28,7 @@ class Home extends StatelessWidget {
           ProgressDialog pd = ProgressDialog(context: context);
 
           /// Set options
-          pd.show(max: 100, msg: 'file Downloading');
+          pd.show(max: 100, msg: 'File Downloading...');
 
           for (int i = 0; i <= 100; i++) {
             /// You don't need to update state, just pass the value.
