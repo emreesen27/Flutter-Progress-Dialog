@@ -18,6 +18,8 @@ Now in your Dart code, you can use:
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 ```
 
+<img src='https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/egg.gif?raw=true'/>
+
 ## Usage Example
 
 Create Progress Dialog
@@ -67,6 +69,16 @@ await dio.download(
 );
 ```
 
+### Customization
 
-
-
+```dart
+pd.show(
+  max: 100,
+  msg: 'File Downloading...',
+  msgColor: Colors.white,
+  backgroundColor: Color(0xff212121),
+  progressValueColor: Color(0xff3550B4),
+  valueColor: Colors.white,
+);
+```
+<img src='https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/egs.png?raw=true'/>
