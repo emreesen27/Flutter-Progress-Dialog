@@ -64,7 +64,7 @@ class ProgressDialog {
                       height: 35.0,
                       child: CircularProgressIndicator(
                         valueColor:
-                        AlwaysStoppedAnimation<Color>(progressValueColor),
+                            AlwaysStoppedAnimation<Color>(progressValueColor),
                       ),
                     ),
                     Padding(
