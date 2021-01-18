@@ -18,7 +18,7 @@ Now in your Dart code, you can use:
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 ```
 
-<img src='https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/egg.gif?raw=true'/>
+<img width=250 height='500' src='https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/egg.gif?raw=true'/>
 
 ## Usage Example
 
