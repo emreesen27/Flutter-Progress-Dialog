@@ -23,6 +23,7 @@ class ProgressDialog {
   }
 
   //  Pass the new value to this method to update the status.
+  //  msg not required
   void update({@required int value, String msg}) {
     _progress.value = value;
     if (msg != null) _msg.value = msg;
