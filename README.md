@@ -34,6 +34,7 @@ pd.show(max: 100, msg: 'File Downloading...');
 ```
 
 You don't need to update state, just pass the value.
+You can also update the msg value(optional)
  
 ```dart
 pd.update(prrogress value);
