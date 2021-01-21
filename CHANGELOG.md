@@ -5,3 +5,7 @@
 ## [0.0.2] - 16.01.2021
 
 * Readme and description edited.
+
+## [0.0.3] - 21.01.2021
+
+* Msg added to update method

@@ -22,7 +22,14 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: Text('Sn Progress Example'),
+        child: Center(
+          child: Text(
+            'Sn Progress Example',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.download_sharp),
@@ -31,11 +38,13 @@ class Home extends StatelessWidget {
           ProgressDialog pd = ProgressDialog(context: context);
 
           /// Set options
-          pd.show(max: 100, msg: 'file Downloading');
-
+          ///max and msg required
+          pd.show(max: 100, msg: 'Preparing Download...');
+          await Future.delayed(Duration(milliseconds: 3000));
           for (int i = 0; i <= 100; i++) {
             /// You don't need to update state, just pass the value.
-            pd.update(i);
+            /// only value required
+            pd.update(value: i, msg: 'File Downloading...');
             i++;
             await Future.delayed(Duration(milliseconds: 100));
           }
