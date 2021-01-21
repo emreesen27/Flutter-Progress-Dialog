@@ -9,6 +9,7 @@ class ProgressDialog {
   /// [_progress] listens to the value of progress.
   //  not directly accessible
   final ValueNotifier _progress = ValueNotifier(0);
+  final ValueNotifier _msg = ValueNotifier('');
 
   /// shows whether the dialog is open.
   //  not directly accessible
@@ -22,8 +23,10 @@ class ProgressDialog {
   }
 
   //  Pass the new value to this method to update the status.
-  void update(int value) {
+  //  msg not required
+  void update({@required int value, String msg}) {
     _progress.value = value;
+    if (msg != null) _msg.value = msg;
   }
 
   //  closes the progress dialog.
@@ -63,6 +66,7 @@ class ProgressDialog {
     assert(msg != null, 'msg (message) is null !');
 
     _dialogIsOpen = true;
+    _msg.value = msg;
     return showDialog(
       barrierDismissible: false,
       context: _context,
@@ -92,7 +96,7 @@ class ProgressDialog {
                         bottom: 8.0,
                       ),
                       child: Text(
-                        msg,
+                        _msg.value,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -105,7 +109,7 @@ class ProgressDialog {
                 ),
                 Align(
                   child: Text(
-                    '${_progress.value}/$max',
+                    value <= 0 ? '' : '${_progress.value}/$max',
                     style: TextStyle(
                       fontSize: valueFontSize,
                       color: valueColor,
