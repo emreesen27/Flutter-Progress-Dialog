@@ -9,3 +9,8 @@
 ## [0.0.3] - 21.01.2021
 
 * Msg added to update method
+
+## [0.0.4] - 29.01.2021
+
+* Progress Type added.
+* Documentation and example codes were organized.

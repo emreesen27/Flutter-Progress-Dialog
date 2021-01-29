@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+enum ValuePosition { center, right }
+
+enum ProgressType { normal, valuable }
+
 class ProgressDialog {
   /// [_progress] Listens to the value of progress.
   //  Not directly accessible.
@@ -72,7 +76,7 @@ class ProgressDialog {
     @required String msg,
     Color backgroundColor: Colors.white,
     Color progressValueColor: Colors.blueAccent,
-    Color progressBgColor: Colors.lightBlueAccent,
+    Color progressBgColor: Colors.blueGrey,
     ProgressType progressType: ProgressType.normal,
     double msgFontSize: 17.0,
     Color msgColor: Colors.black87,
@@ -158,14 +162,4 @@ class ProgressDialog {
       ),
     );
   }
-}
-
-enum ValuePosition {
-  center,
-  right,
-}
-
-enum ProgressType {
-  normal,
-  valuable,
 }
