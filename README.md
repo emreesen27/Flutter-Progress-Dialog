@@ -17,8 +17,20 @@ Now in your Dart code, you can use:
 ```dart
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 ```
+<p float="left">
+<img width="225"  src='https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/normal.gif?raw=true'/>
+<img width="225"  src='https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/valuable.gif?raw=true'/>
+<img width="225"  src='https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/preparing.gif?raw=true'/>
+<img width="225"  src='https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/custom.gif?raw=true'/>
+ </p>
+ 
+ Standart Progress          |  Valuable Progress
+:-------------------------:|:-------------------------:
+![](https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/normal.gif?raw=true) | ![](https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/valuable.gif?raw=true)
 
-<img width=250 height='500' src='https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/egg.gif?raw=true'/>
+ Preparing Progress          |  Custom Progress
+:-------------------------:|:-------------------------:
+![](https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/preparing.gif?raw=true) | ![](https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/custom.gif?raw=true)
 
 ## Usage Example
 
