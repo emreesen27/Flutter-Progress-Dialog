@@ -75,17 +75,3 @@ await dio.download(
   },
 );
 ```
-
-### Customization
-
-```dart
-pd.show(
-  max: 100,
-  msg: 'File Downloading...',
-  msgColor: Colors.white,
-  backgroundColor: Color(0xff212121),
-  progressValueColor: Color(0xff3550B4),
-  valueColor: Colors.white,
-);
-```
-<img src='https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/egs.png?raw=true'/>
