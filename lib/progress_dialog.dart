@@ -75,6 +75,7 @@ class ProgressDialog {
     @required int max,
     @required String msg,
     Color backgroundColor: Colors.white,
+    Color barrierColor: Colors.transparent,
     Color progressValueColor: Colors.blueAccent,
     Color progressBgColor: Colors.blueGrey,
     ProgressType progressType: ProgressType.normal,
@@ -93,6 +94,7 @@ class ProgressDialog {
     _msg.value = msg;
     return showDialog(
       barrierDismissible: false,
+      barrierColor: barrierColor,
       context: _context,
       builder: (context) => AlertDialog(
         backgroundColor: backgroundColor,
