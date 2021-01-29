@@ -58,6 +58,7 @@ class ProgressDialog {
     double msgFontSize: 17.0,
     Color msgColor: Colors.black87,
     FontWeight msqFontWeight: FontWeight.bold,
+    FontWeight valueFontWeight: FontWeight.normal,
     double valueFontSize: 15.0,
     Color valueColor: Colors.black87,
     ValuePosition valuePosition: ValuePosition.right,
@@ -113,6 +114,7 @@ class ProgressDialog {
                     style: TextStyle(
                       fontSize: valueFontSize,
                       color: valueColor,
+                      fontWeight: valueFontWeight,
                     ),
                   ),
                   alignment: valuePosition == ValuePosition.right
