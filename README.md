@@ -17,6 +17,7 @@ Now in your Dart code, you can use:
 ```dart
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 ```
+* [You can check the sample codes for usage details](https://github.com/emreesen27/Flutter-Progress-Dialog/tree/master/example)
 
  Normal Progress          |  Valuable Progress
 :-------------------------:|:-------------------------:
