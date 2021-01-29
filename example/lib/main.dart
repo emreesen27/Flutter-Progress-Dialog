@@ -36,7 +36,11 @@ class Home extends StatelessWidget {
 
           /// Set options
           ///max and msg required
-          pd.show(max: 100, msg: 'Preparing Download...');
+          pd.show(
+            max: 100,
+            msg: 'Preparing Download...',
+            progressType: ProgressType.valuable
+          );
           await Future.delayed(Duration(milliseconds: 3000));
           for (int i = 0; i <= 100; i++) {
             /// You don't need to update state, just pass the value.
