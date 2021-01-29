@@ -13,4 +13,4 @@
 ## [0.0.4] - 29.01.2021
 
 * Progress Type added.
-* Documentation and example codes were organized.
+* Documentation and example codes edited.
