@@ -18,7 +18,7 @@ Now in your Dart code, you can use:
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 ```
 
- Standart Progress          |  Valuable Progress
+ Normal Progress          |  Valuable Progress
 :-------------------------:|:-------------------------:
 ![](https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/normal.gif?raw=true) | ![](https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/valuable.gif?raw=true)
 
