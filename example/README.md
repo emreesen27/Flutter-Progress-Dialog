@@ -1,4 +1,4 @@
-# sn_progress_dialog example
+# Sn Progress Dialog Example
 
 ```dart
 import 'package:flutter/material.dart';
