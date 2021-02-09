@@ -74,18 +74,20 @@ class ProgressDialog {
   show({
     @required int max,
     @required String msg,
+    ProgressType progressType: ProgressType.normal,
+    ValuePosition valuePosition: ValuePosition.right,
     Color backgroundColor: Colors.white,
     Color barrierColor: Colors.transparent,
     Color progressValueColor: Colors.blueAccent,
     Color progressBgColor: Colors.blueGrey,
-    ProgressType progressType: ProgressType.normal,
-    double msgFontSize: 17.0,
+    Color valueColor: Colors.black87,
     Color msgColor: Colors.black87,
     FontWeight msqFontWeight: FontWeight.bold,
     FontWeight valueFontWeight: FontWeight.normal,
     double valueFontSize: 15.0,
-    Color valueColor: Colors.black87,
-    ValuePosition valuePosition: ValuePosition.right,
+    double msgFontSize: 17.0,
+    double elevation: 5.0,
+    bool barrierDismissible: false,
   }) {
     assert(max != null, 'max is null !');
     assert(msg != null, 'msg (message) is null !');
@@ -93,11 +95,12 @@ class ProgressDialog {
     _dialogIsOpen = true;
     _msg.value = msg;
     return showDialog(
-      barrierDismissible: false,
+      barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
       context: _context,
       builder: (context) => AlertDialog(
         backgroundColor: backgroundColor,
+        elevation: elevation,
         content: ValueListenableBuilder(
           valueListenable: _progress,
           builder: (BuildContext context, value, Widget child) {
