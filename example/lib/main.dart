@@ -23,7 +23,7 @@ class Home extends StatelessWidget {
     /// Max and msg required
     pd.show(
       max: 100,
-      msg: 'File Downloading...asdasdasdasdasdasd',
+      msg: 'File Downloading...',
       progressBgColor: Colors.transparent,
     );
     for (int i = 0; i <= 100; i++) {
