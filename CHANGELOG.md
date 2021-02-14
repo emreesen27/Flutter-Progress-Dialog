@@ -14,3 +14,7 @@
 
 * Progress Type added.
 * Documentation and example codes edited.
+
+## [0.0.5] - 14.02.2021
+
+* New properties added
