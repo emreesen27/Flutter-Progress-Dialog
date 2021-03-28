@@ -1,11 +1,11 @@
 name: sn_progress_dialog
 description: Customizable progress dialog package for Flutter.(Captures the progress value)
-version: 0.0.5
+version: 1.0.0-nullsafety.0
 author: A.Emre ESEN <emreesen27@gmail.com>
 homepage: https://github.com/emreesen27/Flutter-Progress-Dialog.git
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0 <3.0.0'
   flutter: ">=1.17.0"
 
 dependencies:

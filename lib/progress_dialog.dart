@@ -19,15 +19,15 @@ class ProgressDialog {
 
   /// [_context] Required to show the alert.
   // Can only be accessed with the constructor.
-  BuildContext _context;
+  late BuildContext _context;
 
-  ProgressDialog({@required context}) {
+  ProgressDialog({required context}) {
     this._context = context;
   }
 
   //  Pass the new value to this method to update the status.
   //  Msg not required.
-  void update({@required int value, String msg}) {
+  void update({required int value, String? msg}) {
     _progress.value = value;
     if (msg != null) _msg.value = msg;
   }
@@ -45,18 +45,18 @@ class ProgressDialog {
     return _dialogIsOpen;
   }
 
-  _valueProgress({Color valueColor, Color bgColor, int value}) {
+  _valueProgress({Color? valueColor, Color? bgColor, required int value}) {
     return CircularProgressIndicator(
       backgroundColor: bgColor,
-      valueColor: AlwaysStoppedAnimation<Color>(valueColor),
+      valueColor: AlwaysStoppedAnimation<Color?>(valueColor),
       value: value.toDouble() / 100,
     );
   }
 
-  _normalProgress({Color valueColor, Color bgColor}) {
+  _normalProgress({Color? valueColor, Color? bgColor}) {
     return CircularProgressIndicator(
       backgroundColor: bgColor,
-      valueColor: AlwaysStoppedAnimation<Color>(valueColor),
+      valueColor: AlwaysStoppedAnimation<Color?>(valueColor),
     );
   }
 
@@ -72,8 +72,8 @@ class ProgressDialog {
   // Normal or valuable.  (Default: normal)
 
   show({
-    @required int max,
-    @required String msg,
+    required int max,
+    required String msg,
     ProgressType progressType: ProgressType.normal,
     ValuePosition valuePosition: ValuePosition.right,
     Color backgroundColor: Colors.white,
@@ -103,7 +103,7 @@ class ProgressDialog {
         elevation: elevation,
         content: ValueListenableBuilder(
           valueListenable: _progress,
-          builder: (BuildContext context, value, Widget child) {
+          builder: (BuildContext context, dynamic value, Widget? child) {
             if (value == max) close();
             return Column(
               mainAxisSize: MainAxisSize.min,
