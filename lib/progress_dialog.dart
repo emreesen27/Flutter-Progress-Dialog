@@ -25,14 +25,14 @@ class ProgressDialog {
     this._context = context;
   }
 
-  //  Pass the new value to this method to update the status.
+  /// [update] Pass the new value to this method to update the status.
   //  Msg not required.
   void update({required int value, String? msg}) {
     _progress.value = value;
     if (msg != null) _msg.value = msg;
   }
 
-  //  Closes the progress dialog.
+  /// [close] Closes the progress dialog.
   void close() {
     if (_dialogIsOpen) {
       Navigator.pop(_context);
@@ -40,12 +40,14 @@ class ProgressDialog {
     }
   }
 
-  //  Returns whether the dialog box is open.
+  ///[isOpen] Returns whether the dialog box is open.
   bool isOpen() {
     return _dialogIsOpen;
   }
 
-  _valueProgress({Color? valueColor, Color? bgColor, required int value}) {
+  /// [_valueProgress] Assigns progress properties and updates the value.
+  //  Not directly accessible.
+  _valueProgress({Color? valueColor, Color? bgColor, required double value}) {
     return CircularProgressIndicator(
       backgroundColor: bgColor,
       valueColor: AlwaysStoppedAnimation<Color?>(valueColor),
@@ -53,6 +55,8 @@ class ProgressDialog {
     );
   }
 
+  /// [_normalProgress] Assigns progress properties.
+  //  Not directly accessible.
   _normalProgress({Color? valueColor, Color? bgColor}) {
     return CircularProgressIndicator(
       backgroundColor: bgColor,
@@ -89,9 +93,6 @@ class ProgressDialog {
     double elevation: 5.0,
     bool barrierDismissible: false,
   }) {
-    assert(max != null, 'max is null !');
-    assert(msg != null, 'msg (message) is null !');
-
     _dialogIsOpen = true;
     _msg.value = msg;
     return showDialog(
@@ -126,7 +127,7 @@ class ProgressDialog {
                               : _valueProgress(
                                   valueColor: progressValueColor,
                                   bgColor: progressBgColor,
-                                  value: value,
+                                  value: (value / max) * 100,
                                 ),
                     ),
                     Padding(

@@ -19,6 +19,7 @@
 
 * New properties added
 
-## [1.0.0-nullsafety.0] - 28.03.2021
+## [1.0.0] - 31.03.2021
 
 * Null Safety migrated
+* Bug fix.
