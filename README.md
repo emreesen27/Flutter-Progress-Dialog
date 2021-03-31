@@ -7,7 +7,7 @@ Progress dialog package for flutter
 You must add the library as a dependency to your project.
 ```yaml
 dependencies:
- sn_progress_dialog: ^1.0.0
+ sn_progress_dialog: ^1.0.1
 ```
 
 You should then run `flutter packages get`
@@ -45,7 +45,7 @@ You don't need to update state, just pass the value.
 You can also update the msg value(optional)
  
 ```dart
-pd.update(prrogress value);
+pd.update(progress value);
 ```
 
 ### Other Properties
