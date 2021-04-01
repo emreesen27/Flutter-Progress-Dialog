@@ -117,22 +117,22 @@ class Home extends StatelessWidget {
                   ),
                 ),
               ),
-              RaisedButton(
+              MaterialButton(
                   child: Text('Normal Progress'),
                   onPressed: () {
                     _normalProgress(context);
                   }),
-              RaisedButton(
+              MaterialButton(
                   child: Text('Valuable Progress'),
                   onPressed: () {
                     _valuableProgress(context);
                   }),
-              RaisedButton(
+              MaterialButton(
                   child: Text('Preparing Progress'),
                   onPressed: () {
                     _preparingProgress(context);
                   }),
-              RaisedButton(
+              MaterialButton(
                   child: Text('Custom Progress'),
                   onPressed: () {
                     _customProgress(context);
