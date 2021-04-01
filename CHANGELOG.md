@@ -23,3 +23,8 @@
 
 * Null Safety migrated
 * Bug fix.
+
+## [1.0.1] - 01.04.2021
+
+* Example edited.
+* Readme edited.
