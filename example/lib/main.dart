@@ -115,21 +115,25 @@ class Home extends StatelessWidget {
                 ),
               ),
               MaterialButton(
+                  color: Color(0xfff7f7f7),
                   child: Text('Normal Progress'),
                   onPressed: () {
                     _normalProgress(context);
                   }),
               MaterialButton(
+                  color: Color(0xfff7f7f7),
                   child: Text('Valuable Progress'),
                   onPressed: () {
                     _valuableProgress(context);
                   }),
               MaterialButton(
+                  color: Color(0xfff7f7f7),
                   child: Text('Preparing Progress'),
                   onPressed: () {
                     _preparingProgress(context);
                   }),
               MaterialButton(
+                  color: Color(0xfff7f7f7),
                   child: Text('Custom Progress'),
                   onPressed: () {
                     _customProgress(context);

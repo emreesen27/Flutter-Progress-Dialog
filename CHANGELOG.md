@@ -28,3 +28,8 @@
 
 * Example edited.
 * Readme edited.
+
+## [1.0.2] - 04.05.2021
+
+* The back button was prevented from closing the dialog.
+* Border radius added.

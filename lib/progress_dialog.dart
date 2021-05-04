@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 enum ValuePosition { center, right }
@@ -75,6 +76,9 @@ class ProgressDialog {
   /// [progressType] Assign the progress bar type.
   // Normal or valuable.  (Default: normal)
 
+  /// [barrierDismissible] Determines whether the dialog closes when the back button or screen is clicked.
+  // True or False (Default: false)
+
   show({
     required int max,
     required String msg,
@@ -91,6 +95,7 @@ class ProgressDialog {
     double valueFontSize: 15.0,
     double msgFontSize: 17.0,
     double elevation: 5.0,
+    double borderRadius: 15.0,
     bool barrierDismissible: false,
   }) {
     _dialogIsOpen = true;
@@ -99,71 +104,82 @@ class ProgressDialog {
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
       context: _context,
-      builder: (context) => AlertDialog(
-        backgroundColor: backgroundColor,
-        elevation: elevation,
-        content: ValueListenableBuilder(
-          valueListenable: _progress,
-          builder: (BuildContext context, dynamic value, Widget? child) {
-            if (value == max) close();
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 35.0,
-                      height: 35.0,
-                      child: progressType == ProgressType.normal
-                          ? _normalProgress(
-                              bgColor: progressBgColor,
-                              valueColor: progressValueColor,
-                            )
-                          : value == 0
-                              ? _normalProgress(
-                                  bgColor: progressBgColor,
-                                  valueColor: progressValueColor,
-                                )
-                              : _valueProgress(
-                                  valueColor: progressValueColor,
-                                  bgColor: progressBgColor,
-                                  value: (value / max) * 100,
-                                ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 15.0,
-                        top: 8.0,
-                        bottom: 8.0,
+      builder: (context) => WillPopScope(
+        child: AlertDialog(
+          backgroundColor: backgroundColor,
+          elevation: elevation,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(borderRadius),
+            ),
+          ),
+          content: ValueListenableBuilder(
+            valueListenable: _progress,
+            builder: (BuildContext context, dynamic value, Widget? child) {
+              if (value == max) close();
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 35.0,
+                        height: 35.0,
+                        child: progressType == ProgressType.normal
+                            ? _normalProgress(
+                                bgColor: progressBgColor,
+                                valueColor: progressValueColor,
+                              )
+                            : value == 0
+                                ? _normalProgress(
+                                    bgColor: progressBgColor,
+                                    valueColor: progressValueColor,
+                                  )
+                                : _valueProgress(
+                                    valueColor: progressValueColor,
+                                    bgColor: progressBgColor,
+                                    value: (value / max) * 100,
+                                  ),
                       ),
-                      child: Text(
-                        _msg.value,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 15.0,
+                          top: 8.0,
+                          bottom: 8.0,
+                        ),
+                        child: Text(
+                          _msg.value,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
                             fontSize: msgFontSize,
                             color: msgColor,
-                            fontWeight: FontWeight.bold),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Align(
+                    child: Text(
+                      value <= 0 ? '' : '${_progress.value}/$max',
+                      style: TextStyle(
+                        fontSize: valueFontSize,
+                        color: valueColor,
+                        fontWeight: valueFontWeight,
                       ),
                     ),
-                  ],
-                ),
-                Align(
-                  child: Text(
-                    value <= 0 ? '' : '${_progress.value}/$max',
-                    style: TextStyle(
-                      fontSize: valueFontSize,
-                      color: valueColor,
-                      fontWeight: valueFontWeight,
-                    ),
+                    alignment: valuePosition == ValuePosition.right
+                        ? Alignment.bottomRight
+                        : Alignment.bottomCenter,
                   ),
-                  alignment: valuePosition == ValuePosition.right
-                      ? Alignment.bottomRight
-                      : Alignment.bottomCenter,
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
+        ),
+        onWillPop: () => Future.value(
+          barrierDismissible,
         ),
       ),
     );
