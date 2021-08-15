@@ -79,6 +79,9 @@ class ProgressDialog {
   /// [barrierDismissible] Determines whether the dialog closes when the back button or screen is clicked.
   // True or False (Default: false)
 
+  /// [msgMaxLines] Use when text value doesn't fit
+  // Int (Default: 1)
+
   show({
     required int max,
     required String msg,
@@ -94,6 +97,7 @@ class ProgressDialog {
     FontWeight valueFontWeight: FontWeight.normal,
     double valueFontSize: 15.0,
     double msgFontSize: 17.0,
+    int msgMaxLines: 1,
     double elevation: 5.0,
     double borderRadius: 15.0,
     bool barrierDismissible: false,
@@ -141,20 +145,22 @@ class ProgressDialog {
                                     value: (value / max) * 100,
                                   ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 15.0,
-                          top: 8.0,
-                          bottom: 8.0,
-                        ),
-                        child: Text(
-                          _msg.value,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: msgFontSize,
-                            color: msgColor,
-                            fontWeight: FontWeight.bold,
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 15.0,
+                            top: 8.0,
+                            bottom: 8.0,
+                          ),
+                          child: Text(
+                            _msg.value,
+                            maxLines: msgMaxLines,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: msgFontSize,
+                              color: msgColor,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),

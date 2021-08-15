@@ -33,3 +33,7 @@
 
 * The back button was prevented from closing the dialog.
 * Border radius added.
+
+## [1.0.3] - 15.08.2021
+
+* Bug fix
