@@ -152,15 +152,20 @@ class ProgressDialog {
                             top: 8.0,
                             bottom: 8.0,
                           ),
-                          child: Text(
-                            _msg.value,
-                            maxLines: msgMaxLines,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: msgFontSize,
-                              color: msgColor,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          child: ValueListenableBuilder(
+                            valueListenable: _msg,
+                            builder: (context, value, child) {
+                              return Text(
+                                _msg.value,
+                                maxLines: msgMaxLines,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: msgFontSize,
+                                  color: msgColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),

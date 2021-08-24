@@ -37,3 +37,7 @@
 ## [1.0.3] - 15.08.2021
 
 * Bug fix
+
+## [1.0.4] - 24.08.2021
+
+* Fix message not updating if you set the value to 0.
