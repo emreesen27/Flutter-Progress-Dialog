@@ -73,7 +73,7 @@ await dio.download(
   'your path',
   onReceiveProgress: (rec, total) {
     int progress = (((rec / total) * 100).toInt());
-    pd.update(progress);
+    pd.update(value: progress);
   },
 );
 ```
