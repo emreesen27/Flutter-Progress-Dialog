@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sn_progress_dialog/completed.dart';
 
 enum ValuePosition { center, right }
 
@@ -82,9 +82,13 @@ class ProgressDialog {
   /// [msgMaxLines] Use when text value doesn't fit
   // Int (Default: 1)
 
+  /// [completed] Widgets that will be displayed when the process is completed are assigned through this class.
+  // If an assignment is not made, the dialog closes without showing anything.
+
   show({
     required int max,
     required String msg,
+    Completed? completed,
     ProgressType progressType: ProgressType.normal,
     ValuePosition valuePosition: ValuePosition.right,
     Color backgroundColor: Colors.white,
@@ -120,31 +124,50 @@ class ProgressDialog {
           content: ValueListenableBuilder(
             valueListenable: _progress,
             builder: (BuildContext context, dynamic value, Widget? child) {
-              if (value == max) close();
+              if (value == max) {
+                if (completed == null)
+                  close();
+                else {
+                  Future.delayed(Duration(milliseconds: completed.closedDelay),
+                      () {
+                    close();
+                  });
+                }
+              }
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
                     children: [
-                      Container(
-                        width: 35.0,
-                        height: 35.0,
-                        child: progressType == ProgressType.normal
-                            ? _normalProgress(
-                                bgColor: progressBgColor,
-                                valueColor: progressValueColor,
-                              )
-                            : value == 0
-                                ? _normalProgress(
-                                    bgColor: progressBgColor,
-                                    valueColor: progressValueColor,
-                                  )
-                                : _valueProgress(
-                                    valueColor: progressValueColor,
-                                    bgColor: progressBgColor,
-                                    value: (value / max) * 100,
+                      value == max && completed != null
+                          ? Image(
+                              width: 40,
+                              height: 40,
+                              image: completed.completedImage ??
+                                  AssetImage(
+                                    "assets/completed.png",
+                                    package: "sn_progress_dialog",
                                   ),
-                      ),
+                            )
+                          : Container(
+                              width: 35.0,
+                              height: 35.0,
+                              child: progressType == ProgressType.normal
+                                  ? _normalProgress(
+                                      bgColor: progressBgColor,
+                                      valueColor: progressValueColor,
+                                    )
+                                  : value == 0
+                                      ? _normalProgress(
+                                          bgColor: progressBgColor,
+                                          valueColor: progressValueColor,
+                                        )
+                                      : _valueProgress(
+                                          valueColor: progressValueColor,
+                                          bgColor: progressBgColor,
+                                          value: (value / max) * 100,
+                                        ),
+                            ),
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.only(
@@ -153,7 +176,9 @@ class ProgressDialog {
                             bottom: 8.0,
                           ),
                           child: Text(
-                            _msg.value,
+                            value == max && completed != null
+                                ? completed.completedMsg
+                                : _msg.value,
                             maxLines: msgMaxLines,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -173,6 +198,9 @@ class ProgressDialog {
                         fontSize: valueFontSize,
                         color: valueColor,
                         fontWeight: valueFontWeight,
+                        decoration: value == max
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
                       ),
                     ),
                     alignment: valuePosition == ValuePosition.right

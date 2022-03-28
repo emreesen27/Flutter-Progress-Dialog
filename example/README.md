@@ -99,6 +99,23 @@ class Home extends StatelessWidget {
     }
   }
 
+  _completedProgress(context) async {
+    ProgressDialog pd = ProgressDialog(context: context);
+    pd.show(
+      max: 100,
+      msg: 'File Downloading...',
+      completed: Completed(),
+      // Completed values can be customized
+      // Completed(completedMsg: "Downloading Done !", completedImage: AssetImage("assets/completed.png"), closedDelay: 2500,),
+      progressBgColor: Colors.transparent,
+    );
+    for (int i = 0; i <= 100; i++) {
+      pd.update(value: i);
+      i++;
+      await Future.delayed(Duration(milliseconds: 100));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,22 +135,32 @@ class Home extends StatelessWidget {
                 ),
               ),
               MaterialButton(
+                  color: Color(0xfff7f7f7),
                   child: Text('Normal Progress'),
                   onPressed: () {
                     _normalProgress(context);
                   }),
               MaterialButton(
+                  color: Color(0xfff7f7f7),
                   child: Text('Valuable Progress'),
                   onPressed: () {
                     _valuableProgress(context);
                   }),
               MaterialButton(
+                  color: Color(0xfff7f7f7),
                   child: Text('Preparing Progress'),
                   onPressed: () {
                     _preparingProgress(context);
                   }),
               MaterialButton(
+                  color: Color(0xfff7f7f7),
                   child: Text('Custom Progress'),
+                  onPressed: () {
+                    _customProgress(context);
+                  }),
+              MaterialButton(
+                  color: Color(0xfff7f7f7),
+                  child: Text('Completed Progress'),
                   onPressed: () {
                     _customProgress(context);
                   }),
