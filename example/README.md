@@ -162,7 +162,7 @@ class Home extends StatelessWidget {
                   color: Color(0xfff7f7f7),
                   child: Text('Completed Progress'),
                   onPressed: () {
-                    _customProgress(context);
+                    _completedProgress(context);
                   }),
             ],
           ),
