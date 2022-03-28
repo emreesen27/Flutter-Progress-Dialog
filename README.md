@@ -49,7 +49,7 @@ pd.update(progress value);
 ```
 
 ### Completed Type
-* Use this to update the dialog when the process is finished.
+* Use this to update the dialog when the process is finished. If it is Empty, progress automatically closes.
 <br/>
 <img src = "https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/completed_type.png?raw=true" width=300>
 
