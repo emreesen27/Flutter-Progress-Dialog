@@ -7,7 +7,7 @@ Progress dialog package for flutter
 You must add the library as a dependency to your project.
 ```yaml
 dependencies:
- sn_progress_dialog: ^1.0.3
+ sn_progress_dialog: ^1.0.4
 ```
 
 You should then run `flutter packages get`
@@ -46,6 +46,16 @@ You can also update the msg value(optional)
  
 ```dart
 pd.update(progress value);
+```
+
+### Completed Type
+* Use this to update the dialog when the process is finished.
+<img src = "https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/completed_type.png?raw=true" width=300>
+
+
+```dart
+ completed: Completed(), // To use with default values
+ completed: Completed(completedMsg: "Downloading Done !", completedImage: AssetImage("assets/completed.png"), closedDelay: 2500)
 ```
 
 ### Other Properties
