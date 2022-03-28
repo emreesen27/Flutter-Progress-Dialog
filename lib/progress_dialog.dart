@@ -85,6 +85,9 @@ class ProgressDialog {
   /// [completed] Widgets that will be displayed when the process is completed are assigned through this class.
   // If an assignment is not made, the dialog closes without showing anything.
 
+  /// [hideValue] If you are not using the progress value, you can hide it.
+  // Default (Default: false)
+
   show({
     required int max,
     required String msg,
@@ -97,6 +100,7 @@ class ProgressDialog {
     Color progressBgColor: Colors.blueGrey,
     Color valueColor: Colors.black87,
     Color msgColor: Colors.black87,
+    TextAlign msgTextAlign: TextAlign.center,
     FontWeight msqFontWeight: FontWeight.bold,
     FontWeight valueFontWeight: FontWeight.normal,
     double valueFontSize: 15.0,
@@ -105,6 +109,7 @@ class ProgressDialog {
     double elevation: 5.0,
     double borderRadius: 15.0,
     bool barrierDismissible: false,
+    bool hideValue: false,
   }) {
     _dialogIsOpen = true;
     _msg.value = msg;
@@ -179,6 +184,7 @@ class ProgressDialog {
                             value == max && completed != null
                                 ? completed.completedMsg
                                 : _msg.value,
+                            textAlign: msgTextAlign,
                             maxLines: msgMaxLines,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -191,22 +197,24 @@ class ProgressDialog {
                       ),
                     ],
                   ),
-                  Align(
-                    child: Text(
-                      value <= 0 ? '' : '${_progress.value}/$max',
-                      style: TextStyle(
-                        fontSize: valueFontSize,
-                        color: valueColor,
-                        fontWeight: valueFontWeight,
-                        decoration: value == max
-                            ? TextDecoration.lineThrough
-                            : TextDecoration.none,
-                      ),
-                    ),
-                    alignment: valuePosition == ValuePosition.right
-                        ? Alignment.bottomRight
-                        : Alignment.bottomCenter,
-                  ),
+                  hideValue == false
+                      ? Align(
+                          child: Text(
+                            value <= 0 ? '' : '${_progress.value}/$max',
+                            style: TextStyle(
+                              fontSize: valueFontSize,
+                              color: valueColor,
+                              fontWeight: valueFontWeight,
+                              decoration: value == max
+                                  ? TextDecoration.lineThrough
+                                  : TextDecoration.none,
+                            ),
+                          ),
+                          alignment: valuePosition == ValuePosition.right
+                              ? Alignment.bottomRight
+                              : Alignment.bottomCenter,
+                        )
+                      : Container()
                 ],
               );
             },

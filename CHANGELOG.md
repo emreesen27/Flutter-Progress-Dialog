@@ -1,3 +1,7 @@
+## [1.0.5] - 28.03.2022
+* Minor changes.
+* Readme edited.
+
 ## [1.0.4] - 28.03.2022
 * Completed type added.
 
