@@ -50,6 +50,7 @@ pd.update(progress value);
 
 ### Completed Type
 * Use this to update the dialog when the process is finished.
+<br/>
 <img src = "https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/completed_type.png?raw=true" width=300>
 
 
