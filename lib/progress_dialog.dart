@@ -220,9 +220,12 @@ class ProgressDialog {
             },
           ),
         ),
-        onWillPop: () => Future.value(
-          barrierDismissible,
-        ),
+        onWillPop: (){
+          if(barrierDismissible){
+            _dialogIsOpen = false;
+          }
+          return Future.value(barrierDismissible);
+        },
       ),
     );
   }
