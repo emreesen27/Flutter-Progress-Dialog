@@ -1,6 +1,9 @@
+## [1.0.7] - 01.04.2022
+* Bug Fix.
+
 ## [1.0.6] - 28.03.2022
 * Readme edited.
-Completed type added.
+* Completed type added.
 
 ## [1.0.3] - 15.08.2021
 * Bug fix
