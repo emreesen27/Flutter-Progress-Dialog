@@ -101,7 +101,7 @@ class ProgressDialog {
     Color valueColor: Colors.black87,
     Color msgColor: Colors.black87,
     TextAlign msgTextAlign: TextAlign.center,
-    FontWeight msqFontWeight: FontWeight.bold,
+    FontWeight msgFontWeight: FontWeight.bold,
     FontWeight valueFontWeight: FontWeight.normal,
     double valueFontSize: 15.0,
     double msgFontSize: 17.0,
@@ -190,7 +190,7 @@ class ProgressDialog {
                             style: TextStyle(
                               fontSize: msgFontSize,
                               color: msgColor,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: msgFontWeight,
                             ),
                           ),
                         ),
@@ -220,8 +220,8 @@ class ProgressDialog {
             },
           ),
         ),
-        onWillPop: (){
-          if(barrierDismissible){
+        onWillPop: () {
+          if (barrierDismissible) {
             _dialogIsOpen = false;
           }
           return Future.value(barrierDismissible);
