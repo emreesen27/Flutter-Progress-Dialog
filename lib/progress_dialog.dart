@@ -18,6 +18,13 @@ class ProgressDialog {
   //  Not directly accessible.
   bool _dialogIsOpen = false;
 
+  /// [_completed] Widgets that will be displayed when the process is completed are assigned through this class.
+  // If an assignment is not made, the dialog closes without showing anything.
+  Completed? _completed;
+
+  /// [_forceCompleted] Force complete the progress dialog.
+  bool _forceCompleted = false;
+
   /// [_context] Required to show the alert.
   // Can only be accessed with the constructor.
   late BuildContext _context;
@@ -28,9 +35,16 @@ class ProgressDialog {
 
   /// [update] Pass the new value to this method to update the status.
   //  Msg not required.
-  void update({required int value, String? msg}) {
-    _progress.value = value;
+  void update({required int value, String? msg, bool step = false}) {
+    _progress.value = step ? _progress.value + value : value;
     if (msg != null) _msg.value = msg;
+  }
+
+  /// [complete] Force complete the progress dialog.
+  void complete(Completed? completed) {
+    _completed = completed;
+    _forceCompleted = true;
+    _progress.value++;
   }
 
   /// [close] Closes the progress dialog.
@@ -79,14 +93,17 @@ class ProgressDialog {
   /// [barrierDismissible] Determines whether the dialog closes when the back button or screen is clicked.
   // True or False (Default: false)
 
-  /// [msgMaxLines] Use when text value doesn't fit
+  /// [msgMaxLines] Use when text value doesn't fit.
   // Int (Default: 1)
 
   /// [completed] Widgets that will be displayed when the process is completed are assigned through this class.
-  // If an assignment is not made, the dialog closes without showing anything.
+  // If an assignment is not made and autoComplete is false, the dialog closes without showing anything.
 
   /// [hideValue] If you are not using the progress value, you can hide it.
   // Default (Default: false)
+
+  /// [autoComplete] Dialog closes automatically when complete.
+  // Default (Default: true)
 
   show({
     required int max,
@@ -110,8 +127,11 @@ class ProgressDialog {
     double borderRadius: 15.0,
     bool barrierDismissible: false,
     bool hideValue: false,
+    bool autoComplete: true,
   }) {
     _dialogIsOpen = true;
+    _completed = completed;
+    _forceCompleted = false;
     _msg.value = msg;
     return showDialog(
       barrierDismissible: barrierDismissible,
@@ -129,12 +149,13 @@ class ProgressDialog {
           content: ValueListenableBuilder(
             valueListenable: _progress,
             builder: (BuildContext context, dynamic value, Widget? child) {
-              if (value == max) {
-                if (completed == null)
+              var complete = (value == max && autoComplete) || _forceCompleted;
+              if (complete) {
+                if (_completed == null)
                   close();
                 else {
-                  Future.delayed(Duration(milliseconds: completed.closedDelay),
-                      () {
+                  Future.delayed(
+                      Duration(milliseconds: _completed!.closedDelay), () {
                     close();
                   });
                 }
@@ -144,11 +165,11 @@ class ProgressDialog {
                 children: [
                   Row(
                     children: [
-                      value == max && completed != null
+                      complete && _completed != null
                           ? Image(
                               width: 40,
                               height: 40,
-                              image: completed.completedImage ??
+                              image: _completed!.completedImage ??
                                   AssetImage(
                                     "assets/completed.png",
                                     package: "sn_progress_dialog",
@@ -181,8 +202,8 @@ class ProgressDialog {
                             bottom: 8.0,
                           ),
                           child: Text(
-                            value == max && completed != null
-                                ? completed.completedMsg
+                            complete && _completed != null
+                                ? _completed!.completedMsg
                                 : _msg.value,
                             textAlign: msgTextAlign,
                             maxLines: msgMaxLines,
