@@ -150,7 +150,7 @@ class ProgressDialog {
                               height: 40,
                               image: completed.completedImage ??
                                   AssetImage(
-                                    "assets/completed.png",
+                                    "images/completed.png",
                                     package: "sn_progress_dialog",
                                   ),
                             )
