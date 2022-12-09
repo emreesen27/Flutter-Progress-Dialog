@@ -34,11 +34,13 @@ class ProgressDialog {
   }
 
   /// [close] Closes the progress dialog.
-  void close() {
-    if (_dialogIsOpen) {
-      Navigator.pop(_context);
-      _dialogIsOpen = false;
-    }
+  void close({int delay = 0}) {
+    Future.delayed(Duration(milliseconds: delay), () {
+      if (_dialogIsOpen) {
+        Navigator.pop(_context);
+        _dialogIsOpen = false;
+      }
+    });
   }
 
   ///[isOpen] Returns whether the dialog box is open.
@@ -88,6 +90,10 @@ class ProgressDialog {
   /// [hideValue] If you are not using the progress value, you can hide it.
   // Default (Default: false)
 
+  /// [closeWithDelay] The time the dialog window will wait to close
+  // If the dialog takes the "completion" object, the value here is ignored.
+  // Default (Default: 100ms)
+
   show({
     required int max,
     required String msg,
@@ -110,6 +116,7 @@ class ProgressDialog {
     double borderRadius: 15.0,
     bool barrierDismissible: false,
     bool hideValue: false,
+    int closeWithDelay: 100,
   }) {
     _dialogIsOpen = true;
     _msg.value = msg;
@@ -130,14 +137,9 @@ class ProgressDialog {
             valueListenable: _progress,
             builder: (BuildContext context, dynamic value, Widget? child) {
               if (value == max) {
-                if (completed == null)
-                  close();
-                else {
-                  Future.delayed(Duration(milliseconds: completed.closedDelay),
-                      () {
-                    close();
-                  });
-                }
+                completed == null
+                    ? close(delay: closeWithDelay)
+                    : close(delay: completed.completionDelay);
               }
               return Column(
                 mainAxisSize: MainAxisSize.min,

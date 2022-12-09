@@ -1,5 +1,7 @@
 ## [1.0.9] - 09.12.2022
 * Assets path edited.
+* The close function can be used with delay.
+* closeWithDelay property added.
 
 ## [1.0.8] - 20.05.2022
 * Bug Fix.

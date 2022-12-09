@@ -56,7 +56,7 @@ pd.update(progress value);
 
 ```dart
  completed: Completed(), // To use with default values
- completed: Completed(completedMsg: "Downloading Done !", completedImage: AssetImage("image path"), closedDelay: 2500)
+ completed: Completed(completedMsg: "Downloading Done !", completedImage: AssetImage("image path"), completionDelay: 2500)
 ```
 
 ### Other Properties
