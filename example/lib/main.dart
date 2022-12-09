@@ -103,7 +103,7 @@ class Home extends StatelessWidget {
       msg: 'File Downloading...',
       completed: Completed(),
       // Completed values can be customized
-      // Completed(completedMsg: "Downloading Done !", completedImage: AssetImage("assets/completed.png"), closedDelay: 2500,),
+      // Completed(completedMsg: "Downloading Done !", completedImage: AssetImage("images/completed.png"), completionDelay: 2500,),
       progressBgColor: Colors.transparent,
     );
     for (int i = 0; i <= 100; i++) {
