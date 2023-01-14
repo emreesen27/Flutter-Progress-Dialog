@@ -160,13 +160,13 @@ class Home extends StatelessWidget {
               ),
               MaterialButton(
                   color: Color(0xfff7f7f7),
-                  child: Text('Normal Progress With Cancel Button'),
+                  child: Text('Normal Progress'),
                   onPressed: () {
                     _normalProgress(context);
                   }),
               MaterialButton(
                   color: Color(0xfff7f7f7),
-                  child: Text('Normal Progress'),
+                  child: Text('Normal Progress With Cancel Button'),
                   onPressed: () {
                     _normalProgressWithCancel(context);
                   }),
