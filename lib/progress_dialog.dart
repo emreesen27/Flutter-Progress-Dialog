@@ -94,6 +94,21 @@ class ProgressDialog {
   // If the dialog takes the "completion" object, the value here is ignored.
   // Default (Default: 100ms)
 
+  /// [isCancelable] Set to true if you need to show the cancel button
+  // Default (Default: false)
+
+  /// [onCancelClicked] Callback if clicked on cancel button
+  // Default (Default: null)
+
+  /// [cancelTxt] Set custom text for cancel button
+  // Default (Default: Cancel)
+
+  /// [cancelFontSize] Set custom text font size for cancel button
+  // Default (Default: 15.0)
+
+  /// [cancelTxtColor] Set custom text color for cancel button
+  // Default (Default: Colors.red)
+
   show({
     required int max,
     required String msg,
@@ -117,6 +132,11 @@ class ProgressDialog {
     bool barrierDismissible: false,
     bool hideValue: false,
     int closeWithDelay: 100,
+    bool isCancelable = false,
+    String cancelTxt = 'Cancel',
+    double cancelFontSize = 15.0,
+    Color cancelTxtColor = Colors.red,
+    GestureTapCallback? onCancelClicked
   }) {
     _dialogIsOpen = true;
     _msg.value = msg;
@@ -216,6 +236,20 @@ class ProgressDialog {
                               ? Alignment.bottomRight
                               : Alignment.bottomCenter,
                         )
+                      : Container(),
+                  isCancelable
+                      ? InkWell(
+                          onTap: onCancelClicked,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              cancelTxt,
+                              style: TextStyle(
+                                fontSize: cancelFontSize,
+                                color: cancelTxtColor,
+                              ),
+                            ),
+                          ))
                       : Container()
                 ],
               );

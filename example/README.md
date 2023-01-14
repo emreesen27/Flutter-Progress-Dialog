@@ -38,6 +38,30 @@ class Home extends StatelessWidget {
     }
   }
 
+  _normalProgressWithCancel(context) async {
+    /// Create progress dialog
+    ProgressDialog pd = ProgressDialog(context: context);
+
+    /// Set options
+    /// Max and msg required
+    pd.show(
+        max: 100,
+        msg: 'File Downloading...',
+        progressBgColor: Colors.transparent,
+        isCancelable: true,
+        onCancelClicked: () {
+          //cancel your api call here
+          pd.close();
+        });
+    for (int i = 0; i <= 100; i++) {
+      /// You don't need to update state, just pass the value.
+      /// Only value required
+      pd.update(value: i);
+      i++;
+      await Future.delayed(Duration(milliseconds: 100));
+    }
+  }
+
   _valuableProgress(context) async {
     ProgressDialog pd = ProgressDialog(context: context);
 
@@ -136,9 +160,15 @@ class Home extends StatelessWidget {
               ),
               MaterialButton(
                   color: Color(0xfff7f7f7),
-                  child: Text('Normal Progress'),
+                  child: Text('Normal Progress With Cancel Button'),
                   onPressed: () {
                     _normalProgress(context);
+                  }),
+              MaterialButton(
+                  color: Color(0xfff7f7f7),
+                  child: Text('Normal Progress'),
+                  onPressed: () {
+                    _normalProgressWithCancel(context);
                   }),
               MaterialButton(
                   color: Color(0xfff7f7f7),
