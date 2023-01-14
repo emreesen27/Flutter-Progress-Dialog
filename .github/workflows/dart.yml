@@ -1,15 +1,15 @@
 name: Dart/Flutter Package Analyzer
-on: [push, pull_request]
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
 
 jobs:
-
   package-analysis:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2 
-
       - uses: axel-op/dart-package-analyzer@v3
         with:
-          githubToken: ${{ secrets.action_token }}
+          githubToken: ${{ secrets.TOKEN }}
