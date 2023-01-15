@@ -1,11 +1,9 @@
 name: pub score
 on:
-  push:
+  pull_request:
     branches:
+      - develop
       - master
-    paths:
-      - "**.dart"
-      - "pubspec.yaml"
 
 jobs:
   package-analysis:
