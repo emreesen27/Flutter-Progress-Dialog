@@ -30,6 +30,9 @@ import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 
 * [You can review the sample codes for detailed usage.](https://github.com/emreesen27/Flutter-Progress-Dialog/tree/master/example)
 
+<!-- Place this tag where you want the button to render. -->
+<a class="github-button" href="https://github.com/emreesen27/Flutter-Progress-Dialog" data-icon="octicon-star" aria-label="Star emreesen27/Flutter-Progress-Dialog on GitHub">Star</a>
+
 Create Progress Dialog
 
 ```dart
@@ -110,3 +113,4 @@ await dio.download(
   },
 );
 ```
+#### If you like the library, you can support the [github](https://github.com/emreesen27/Flutter-Progress-Dialog) repo by giving a star.
