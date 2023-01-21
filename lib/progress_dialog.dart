@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:sn_progress_dialog/completed.dart';
+import 'package:sn_progress_dialog/options/completed.dart';
+import 'package:sn_progress_dialog/options/cancel.dart';
 
 enum ValuePosition { center, right }
 
 enum ProgressType { normal, valuable }
+
+enum DialogStatus { opened, closed, completed }
 
 class ProgressDialog {
   /// [_progress] Listens to the value of progress.
@@ -22,6 +25,10 @@ class ProgressDialog {
   // Can only be accessed with the constructor.
   late BuildContext _context;
 
+  /// [_onStatusChanged] Keeps track of the current status of the dialog window.
+  // Value assignment is done later.
+  ValueChanged<DialogStatus>? _onStatusChanged;
+
   ProgressDialog({required context}) {
     this._context = context;
   }
@@ -39,6 +46,7 @@ class ProgressDialog {
       if (_dialogIsOpen) {
         Navigator.pop(_context);
         _dialogIsOpen = false;
+        setDialogStatus(DialogStatus.closed);
       }
     });
   }
@@ -46,6 +54,11 @@ class ProgressDialog {
   ///[isOpen] Returns whether the dialog box is open.
   bool isOpen() {
     return _dialogIsOpen;
+  }
+
+  ///[setDialogStatus] Dialog window sets your new state.
+  void setDialogStatus(DialogStatus status) {
+    if (_onStatusChanged != null) _onStatusChanged!(status);
   }
 
   /// [_valueProgress] Assigns progress properties and updates the value.
@@ -87,6 +100,9 @@ class ProgressDialog {
   /// [completed] Widgets that will be displayed when the process is completed are assigned through this class.
   // If an assignment is not made, the dialog closes without showing anything.
 
+  /// [cancel] Use it to have a close button on the dialog.
+  // Manage other properties related to cancel button via this class.
+
   /// [hideValue] If you are not using the progress value, you can hide it.
   // Default (Default: false)
 
@@ -98,6 +114,7 @@ class ProgressDialog {
     required int max,
     required String msg,
     Completed? completed,
+    Cancel? cancel,
     ProgressType progressType: ProgressType.normal,
     ValuePosition valuePosition: ValuePosition.right,
     Color backgroundColor: Colors.white,
@@ -117,9 +134,12 @@ class ProgressDialog {
     bool barrierDismissible: false,
     bool hideValue: false,
     int closeWithDelay: 100,
+    ValueChanged<DialogStatus>? onStatusChanged,
   }) {
     _dialogIsOpen = true;
     _msg.value = msg;
+    _onStatusChanged = onStatusChanged;
+    setDialogStatus(DialogStatus.opened);
     return showDialog(
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
@@ -137,6 +157,7 @@ class ProgressDialog {
             valueListenable: _progress,
             builder: (BuildContext context, dynamic value, Widget? child) {
               if (value == max) {
+                setDialogStatus(DialogStatus.completed);
                 completed == null
                     ? close(delay: closeWithDelay)
                     : close(delay: completed.completionDelay);
@@ -144,6 +165,30 @@ class ProgressDialog {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  cancel != null
+                      ? Align(
+                          alignment: Alignment.topRight,
+                          child: InkWell(
+                            highlightColor: Colors.transparent,
+                            splashColor: Colors.transparent,
+                            onTap: () {
+                              close();
+                              if (cancel.cancelClicked != null)
+                                cancel.cancelClicked!();
+                            },
+                            child: Image(
+                              width: cancel.cancelImageSize,
+                              height: cancel.cancelImageSize,
+                              color: cancel.cancelImageColor,
+                              image: cancel.cancelImage ??
+                                  AssetImage(
+                                    "images/cancel.png",
+                                    package: "sn_progress_dialog",
+                                  ),
+                            ),
+                          ),
+                        )
+                      : Container(),
                   Row(
                     children: [
                       value == max && completed != null

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Completed {
   /// [completedMsg] Assign the completed Message
   // (Default: "completed")
-  final String completedMsg;
+  String completedMsg;
 
   /// [completionDelay] The time the dialog window will wait to close
   // (Default: 1500 ms)
