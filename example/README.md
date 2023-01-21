@@ -28,6 +28,11 @@ class Home extends StatelessWidget {
       max: 100,
       msg: 'File Downloading...',
       progressBgColor: Colors.transparent,
+      cancel: Cancel(
+        cancelClicked: () {
+          /// ex: cancel the download
+        },
+      ),
     );
     for (int i = 0; i <= 100; i++) {
       /// You don't need to update state, just pass the value.
