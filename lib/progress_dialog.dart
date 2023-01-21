@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sn_progress_dialog/options/completed.dart';
-import 'options/cancel.dart';
+import 'package:sn_progress_dialog/options/cancel.dart';
 
 enum ValuePosition { center, right }
 
