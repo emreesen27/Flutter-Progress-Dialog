@@ -1,3 +1,8 @@
+## [1.1.0] - 20.05.2022
+* Bug Fix.
+* Cancel option added.
+* Dialog status callback added.
+
 ## [1.0.9] - 09.12.2022
 * Assets path edited.
 * The close function can be used with delay.

@@ -7,7 +7,7 @@ Progress dialog package for flutter
 You must add the library as a dependency to your project.
 ```yaml
 dependencies:
- sn_progress_dialog: ^1.0.9
+ sn_progress_dialog: ^1.1.0
 ```
 
 You should then run `flutter packages get`
@@ -55,8 +55,30 @@ pd.update(progress value);
 
 
 ```dart
- completed: Completed(), // To use with default values
+ completed: Completed() // To use with default values
  completed: Completed(completedMsg: "Downloading Done !", completedImage: AssetImage("image path"), completionDelay: 2500)
+```
+
+### Cancel Option
+* Use the "cancel" class to create a cancel button
+
+```dart
+cancel: Cancel() // To use with default values
+cancel: Cancel( cancelImageSize: 20.0, cancelImageColor: Colors.blue, cancelImage: AssetImage("image path"), cancelClicked: () {})
+```
+
+### Dialog Status
+* Returns the current state of the dialog.
+
+```dart
+onStatusChanged: (status) {
+ if (status == DialogStatus.opened)
+   print("opened");
+ else if (status == DialogStatus.closed)
+   print("closed");
+ else if (status == DialogStatus.completed) 
+   print("completed");
+}
 ```
 
 ### Other Properties
