@@ -1,11 +1,11 @@
-## [1.1.2] - 22-01-2023
+## [1.1.2] - 22.01.2023
 * Auto hidden added.
 * Readme edited.
 
 ## [1.1.1] - 21.01.2023
-* Readme Edited.
+* Readme edited.
 
-## [1.1.0] - 20.05.2022
+## [1.1.0] - 21.01.2023
 * Bug Fix.
 * Cancel option added.
 * Dialog status callback added.

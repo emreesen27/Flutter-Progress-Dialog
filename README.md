@@ -30,6 +30,7 @@ import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 
 * [You can review the sample codes for detailed usage.](https://github.com/emreesen27/Flutter-Progress-Dialog/tree/master/example)
 
+
 Create Progress Dialog
 
 ```dart
@@ -110,3 +111,4 @@ await dio.download(
   },
 );
 ```
+#### If you like the library, you can support the [github](https://github.com/emreesen27/Flutter-Progress-Dialog) repo by giving a star.
