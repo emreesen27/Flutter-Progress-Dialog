@@ -16,10 +16,15 @@ class Cancel {
   // (Default: black)
   final Color? cancelImageColor;
 
+  /// [autoHidden] It hides the cancel button when value and max are equal.
+  // (Default: true)
+  final bool autoHidden;
+
   Cancel({
     this.cancelClicked,
     this.cancelImage,
     this.cancelImageSize = 15.0,
     this.cancelImageColor = Colors.black,
+    this.autoHidden = true,
   });
 }

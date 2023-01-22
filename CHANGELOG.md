@@ -1,3 +1,7 @@
+## [1.1.2] - 22.01.2023
+* Auto hidden added.
+* Readme edited.
+
 ## [1.1.1] - 21.01.2023
 * Readme edited.
 
