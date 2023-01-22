@@ -46,7 +46,7 @@ class ProgressDialog {
       if (_dialogIsOpen) {
         Navigator.pop(_context);
         _dialogIsOpen = false;
-        setDialogStatus(DialogStatus.closed);
+        _setDialogStatus(DialogStatus.closed);
       }
     });
   }
@@ -57,7 +57,7 @@ class ProgressDialog {
   }
 
   ///[setDialogStatus] Dialog window sets your new state.
-  void setDialogStatus(DialogStatus status) {
+  void _setDialogStatus(DialogStatus status) {
     if (_onStatusChanged != null) _onStatusChanged!(status);
   }
 
@@ -139,7 +139,7 @@ class ProgressDialog {
     _dialogIsOpen = true;
     _msg.value = msg;
     _onStatusChanged = onStatusChanged;
-    setDialogStatus(DialogStatus.opened);
+    _setDialogStatus(DialogStatus.opened);
     return showDialog(
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
@@ -157,7 +157,7 @@ class ProgressDialog {
             valueListenable: _progress,
             builder: (BuildContext context, dynamic value, Widget? child) {
               if (value == max) {
-                setDialogStatus(DialogStatus.completed);
+                _setDialogStatus(DialogStatus.completed);
                 completed == null
                     ? close(delay: closeWithDelay)
                     : close(delay: completed.completionDelay);
@@ -165,30 +165,32 @@ class ProgressDialog {
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  cancel != null
-                      ? Align(
-                          alignment: Alignment.topRight,
-                          child: InkWell(
-                            highlightColor: Colors.transparent,
-                            splashColor: Colors.transparent,
-                            onTap: () {
-                              close();
-                              if (cancel.cancelClicked != null)
-                                cancel.cancelClicked!();
-                            },
-                            child: Image(
-                              width: cancel.cancelImageSize,
-                              height: cancel.cancelImageSize,
-                              color: cancel.cancelImageColor,
-                              image: cancel.cancelImage ??
-                                  AssetImage(
-                                    "images/cancel.png",
-                                    package: "sn_progress_dialog",
-                                  ),
+                  if (cancel != null) ...[
+                    cancel.autoHidden && value == max
+                        ? SizedBox.shrink()
+                        : Align(
+                            alignment: Alignment.topRight,
+                            child: InkWell(
+                              highlightColor: Colors.transparent,
+                              splashColor: Colors.transparent,
+                              onTap: () {
+                                close();
+                                if (cancel.cancelClicked != null)
+                                  cancel.cancelClicked!();
+                              },
+                              child: Image(
+                                width: cancel.cancelImageSize,
+                                height: cancel.cancelImageSize,
+                                color: cancel.cancelImageColor,
+                                image: cancel.cancelImage ??
+                                    AssetImage(
+                                      "images/cancel.png",
+                                      package: "sn_progress_dialog",
+                                    ),
+                              ),
                             ),
                           ),
-                        )
-                      : Container(),
+                  ],
                   Row(
                     children: [
                       value == max && completed != null
@@ -261,7 +263,7 @@ class ProgressDialog {
                               ? Alignment.bottomRight
                               : Alignment.bottomCenter,
                         )
-                      : Container()
+                      : SizedBox.shrink()
                 ],
               );
             },
