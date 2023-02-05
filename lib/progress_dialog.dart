@@ -4,7 +4,7 @@ import 'package:sn_progress_dialog/options/cancel.dart';
 
 enum ValuePosition { center, right }
 
-enum ProgressType { normal, valuable }
+enum ProgressType { determinate, indeterminate }
 
 enum DialogStatus { opened, closed, completed }
 
@@ -13,9 +13,9 @@ class ProgressDialog {
   //  Not directly accessible.
   final ValueNotifier _progress = ValueNotifier(0);
 
-  /// [_msg] Listens to the msg value.
+  /// [_message] Listens to the msg value.
   // Value assignment is done later.
-  final ValueNotifier _msg = ValueNotifier('');
+  final ValueNotifier _message = ValueNotifier('');
 
   /// [_dialogIsOpen] Shows whether the dialog is open.
   //  Not directly accessible.
@@ -29,15 +29,120 @@ class ProgressDialog {
   // Value assignment is done later.
   ValueChanged<DialogStatus>? _onStatusChanged;
 
-  ProgressDialog({required context}) {
-    this._context = context;
+  int? _maxValue;
+  late ProgressType _progressType;
+  Completed? _completed;
+  Cancel? _cancel;
+  ValuePosition _valuePosition = ValuePosition.right;
+  Color _backgroundColor = Colors.white;
+  Color _barrierColor = Colors.transparent;
+  Color _progressValueColor = Colors.blueAccent;
+  Color _progressBgColor = Colors.blueGrey;
+  Color _valueColor = Colors.black87;
+  Color _messageTextColor = Colors.black87;
+  TextAlign _messageTextAlign = TextAlign.center;
+  FontWeight _messageFontWeight = FontWeight.bold;
+  FontWeight _valueFontWeight = FontWeight.normal;
+  double _valueFontSize = 15.0;
+  double _messageFontSize = 17.0;
+  int _messageMaxLines = 1;
+  double _elevation = 5.0;
+  double _borderRadius = 15.0;
+  bool _barrierDismissible = false;
+  bool _hideValue = false;
+  int _closeWithDelay = 100;
+
+  ProgressDialog.indeterminate({
+    required BuildContext context,
+    required String message,
+    Cancel? cancel,
+    Color? backgroundColor,
+    Color? barrierColor,
+    Color? progressValueColor,
+    Color? progressBgColor,
+    Color? messageTextColor,
+    TextAlign? messageTextAlign,
+    FontWeight? messageFontWeight,
+    double? messageFontSize,
+    int? messageMaxLines,
+    double? elevation,
+    double? borderRadius,
+    bool? barrierDismissible,
+  }) {
+    _context = context;
+    _message.value = message;
+    _cancel = cancel;
+    _backgroundColor = backgroundColor ?? Colors.white;
+    _barrierColor = barrierColor ?? Colors.transparent;
+    _progressValueColor = progressValueColor ?? Colors.blueAccent;
+    _progressBgColor = progressBgColor ?? Colors.blueGrey;
+    _messageTextColor = messageTextColor ?? Colors.black87;
+    _messageTextAlign = messageTextAlign ?? TextAlign.center;
+    _messageFontWeight = messageFontWeight ?? FontWeight.bold;
+    _messageFontSize = messageFontSize ?? 17.0;
+    _messageMaxLines = messageMaxLines ?? 1;
+    _elevation = elevation ?? 5.0;
+    _borderRadius = borderRadius ?? 15.0;
+    _barrierDismissible = barrierDismissible ?? false;
+    _progressType = ProgressType.indeterminate;
+  }
+
+  ProgressDialog.determinate({
+    required context,
+    required String message,
+    required int maxValue,
+    Completed? completed,
+    Cancel? cancel,
+    ValuePosition? valuePosition,
+    Color? backgroundColor,
+    Color? barrierColor,
+    Color? progressValueColor,
+    Color? progressBgColor,
+    Color? valueColor,
+    Color? messageTextColor,
+    TextAlign? messageTextAlign,
+    FontWeight? messageFontWeight,
+    FontWeight? valueFontWeight,
+    double? valueFontSize,
+    double? messageFontSize,
+    int? messageMaxLines,
+    double? elevation,
+    double? borderRadius,
+    bool? barrierDismissible,
+    bool? hideValue,
+    int? closeWithDelay,
+  }) {
+    _context = context;
+    _message.value = message;
+    _maxValue = maxValue;
+    _cancel = cancel;
+    _valuePosition = valuePosition ?? ValuePosition.right;
+    _completed = completed;
+    _backgroundColor = backgroundColor ?? Colors.white;
+    _barrierColor = barrierColor ?? Colors.transparent;
+    _progressValueColor = progressValueColor ?? Colors.blueAccent;
+    _progressBgColor = progressBgColor ?? Colors.blueGrey;
+    _valueColor = valueColor ?? Colors.black87;
+    _messageTextColor = messageTextColor ?? Colors.black87;
+    _messageTextAlign = messageTextAlign ?? TextAlign.center;
+    _messageFontWeight = messageFontWeight ?? FontWeight.bold;
+    _valueFontWeight = valueFontWeight ?? FontWeight.normal;
+    _valueFontSize = valueFontSize ?? 15.0;
+    _messageFontSize = messageFontSize ?? 17.0;
+    _messageMaxLines = messageMaxLines ?? 1;
+    _elevation = elevation ?? 5.0;
+    _borderRadius = borderRadius ?? 15.0;
+    _barrierDismissible = barrierDismissible ?? false;
+    _hideValue = hideValue ?? false;
+    _closeWithDelay = closeWithDelay ?? 100;
+    _progressType = ProgressType.determinate;
   }
 
   /// [update] Pass the new value to this method to update the status.
   //  Msg not required.
-  void update({required int value, String? msg}) {
-    _progress.value = value;
-    if (msg != null) _msg.value = msg;
+  void update({int? value, String? message}) {
+    if (value != null) _progress.value = value;
+    if (message != null) _message.value = message;
   }
 
   /// [close] Closes the progress dialog.
@@ -111,171 +216,202 @@ class ProgressDialog {
   // Default (Default: 100ms)
 
   show({
-    required int max,
-    required String msg,
-    Completed? completed,
-    Cancel? cancel,
-    ProgressType progressType: ProgressType.normal,
-    ValuePosition valuePosition: ValuePosition.right,
-    Color backgroundColor: Colors.white,
-    Color barrierColor: Colors.transparent,
-    Color progressValueColor: Colors.blueAccent,
-    Color progressBgColor: Colors.blueGrey,
-    Color valueColor: Colors.black87,
-    Color msgColor: Colors.black87,
-    TextAlign msgTextAlign: TextAlign.center,
-    FontWeight msgFontWeight: FontWeight.bold,
-    FontWeight valueFontWeight: FontWeight.normal,
-    double valueFontSize: 15.0,
-    double msgFontSize: 17.0,
-    int msgMaxLines: 1,
-    double elevation: 5.0,
-    double borderRadius: 15.0,
-    bool barrierDismissible: false,
-    bool hideValue: false,
-    int closeWithDelay: 100,
     ValueChanged<DialogStatus>? onStatusChanged,
-  }) {
+  }) async {
     _dialogIsOpen = true;
-    _msg.value = msg;
     _onStatusChanged = onStatusChanged;
     _setDialogStatus(DialogStatus.opened);
     return showDialog(
-      barrierDismissible: barrierDismissible,
-      barrierColor: barrierColor,
+      barrierDismissible: _barrierDismissible,
+      barrierColor: _barrierColor,
       context: _context,
       builder: (context) => WillPopScope(
         child: AlertDialog(
-          backgroundColor: backgroundColor,
-          elevation: elevation,
+          backgroundColor: _backgroundColor,
+          elevation: _elevation,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
-              Radius.circular(borderRadius),
+              Radius.circular(_borderRadius),
             ),
           ),
-          content: ValueListenableBuilder(
-            valueListenable: _progress,
-            builder: (BuildContext context, dynamic value, Widget? child) {
-              if (value == max) {
-                _setDialogStatus(DialogStatus.completed);
-                completed == null
-                    ? close(delay: closeWithDelay)
-                    : close(delay: completed.completionDelay);
-              }
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (cancel != null) ...[
-                    cancel.autoHidden && value == max
-                        ? SizedBox.shrink()
-                        : Align(
-                            alignment: Alignment.topRight,
-                            child: InkWell(
-                              highlightColor: Colors.transparent,
-                              splashColor: Colors.transparent,
-                              onTap: () {
-                                close();
-                                if (cancel.cancelClicked != null)
-                                  cancel.cancelClicked!();
-                              },
-                              child: Image(
-                                width: cancel.cancelImageSize,
-                                height: cancel.cancelImageSize,
-                                color: cancel.cancelImageColor,
-                                image: cancel.cancelImage ??
-                                    AssetImage(
-                                      "images/cancel.png",
-                                      package: "sn_progress_dialog",
-                                    ),
-                              ),
-                            ),
-                          ),
-                  ],
-                  Row(
-                    children: [
-                      value == max && completed != null
-                          ? Image(
-                              width: 40,
-                              height: 40,
-                              image: completed.completedImage ??
-                                  AssetImage(
-                                    "images/completed.png",
-                                    package: "sn_progress_dialog",
-                                  ),
-                            )
-                          : Container(
-                              width: 35.0,
-                              height: 35.0,
-                              child: progressType == ProgressType.normal
-                                  ? _normalProgress(
-                                      bgColor: progressBgColor,
-                                      valueColor: progressValueColor,
-                                    )
-                                  : value == 0
-                                      ? _normalProgress(
-                                          bgColor: progressBgColor,
-                                          valueColor: progressValueColor,
-                                        )
-                                      : _valueProgress(
-                                          valueColor: progressValueColor,
-                                          bgColor: progressBgColor,
-                                          value: (value / max) * 100,
-                                        ),
-                            ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 15.0,
-                            top: 8.0,
-                            bottom: 8.0,
-                          ),
-                          child: Text(
-                            value == max && completed != null
-                                ? completed.completedMsg
-                                : _msg.value,
-                            textAlign: msgTextAlign,
-                            maxLines: msgMaxLines,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: msgFontSize,
-                              color: msgColor,
-                              fontWeight: msgFontWeight,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  hideValue == false
-                      ? Align(
-                          child: Text(
-                            value <= 0 ? '' : '${_progress.value}/$max',
-                            style: TextStyle(
-                              fontSize: valueFontSize,
-                              color: valueColor,
-                              fontWeight: valueFontWeight,
-                              decoration: value == max
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none,
-                            ),
-                          ),
-                          alignment: valuePosition == ValuePosition.right
-                              ? Alignment.bottomRight
-                              : Alignment.bottomCenter,
-                        )
-                      : SizedBox.shrink()
-                ],
-              );
-            },
-          ),
+          content: _progressType == ProgressType.determinate
+              ? _createDeterminate()
+              : _createIndeterminate(),
         ),
         onWillPop: () {
-          if (barrierDismissible) {
+          if (_barrierDismissible) {
             _dialogIsOpen = false;
           }
-          return Future.value(barrierDismissible);
+          return Future.value(_barrierDismissible);
         },
       ),
+    );
+  }
+
+  Widget _createCancelButton() {
+    return Align(
+      alignment: Alignment.topRight,
+      child: InkWell(
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
+        onTap: () {
+          close();
+          if (_cancel!.cancelClicked != null) _cancel!.cancelClicked!();
+        },
+        child: Image(
+          width: _cancel!.cancelImageSize,
+          height: _cancel!.cancelImageSize,
+          color: _cancel!.cancelImageColor,
+          image: _cancel!.cancelImage ??
+              AssetImage(
+                "images/cancel.png",
+                package: "sn_progress_dialog",
+              ),
+        ),
+      ),
+    );
+  }
+
+  Widget _createDeterminate() {
+    return ValueListenableBuilder(
+      valueListenable: _progress,
+      builder: (BuildContext context, dynamic value, Widget? child) {
+        if (value == _maxValue) {
+          _setDialogStatus(DialogStatus.completed);
+          _completed == null
+              ? close(delay: _closeWithDelay)
+              : close(delay: _completed?.completionDelay ?? 1500);
+        }
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (_cancel != null) ...[
+              _cancel!.autoHidden && value == _maxValue
+                  ? SizedBox.shrink()
+                  : _createCancelButton(),
+            ],
+            Row(
+              children: [
+                value == _maxValue && _completed != null
+                    ? Image(
+                        width: 40,
+                        height: 40,
+                        image: _completed!.completedImage ??
+                            AssetImage(
+                              "images/completed.png",
+                              package: "sn_progress_dialog",
+                            ),
+                      )
+                    : Container(
+                        width: 35.0,
+                        height: 35.0,
+                        child: value == 0
+                            ? _normalProgress(
+                                bgColor: _progressBgColor,
+                                valueColor: _progressValueColor,
+                              )
+                            : _valueProgress(
+                                valueColor: _progressValueColor,
+                                bgColor: _progressBgColor,
+                                value: (value / _maxValue) * 100,
+                              ),
+                      ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 15.0,
+                      top: 8.0,
+                      bottom: 8.0,
+                    ),
+                    child: Text(
+                      value == _maxValue && _completed != null
+                          ? _completed!.completedMsg
+                          : _message.value,
+                      textAlign: _messageTextAlign,
+                      maxLines: _messageMaxLines,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: _messageFontSize,
+                        color: _messageTextColor,
+                        fontWeight: _messageFontWeight,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            _hideValue == false
+                ? Align(
+                    child: Text(
+                      value <= 0 ? '' : '${_progress.value}/$_maxValue',
+                      style: TextStyle(
+                        fontSize: _valueFontSize,
+                        color: _valueColor,
+                        fontWeight: _valueFontWeight,
+                        decoration: value == _maxValue
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
+                      ),
+                    ),
+                    alignment: _valuePosition == ValuePosition.right
+                        ? Alignment.bottomRight
+                        : Alignment.bottomCenter,
+                  )
+                : SizedBox.shrink()
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _createIndeterminate() {
+    return ValueListenableBuilder(
+      valueListenable: _message,
+      builder: (BuildContext context, dynamic value, Widget? child) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (_cancel != null) ...[
+              Align(
+                alignment: Alignment.topRight,
+                child: _createCancelButton(),
+              ),
+            ],
+            Row(
+              children: [
+                Container(
+                  width: 35.0,
+                  height: 35.0,
+                  child: _normalProgress(
+                    bgColor: _progressBgColor,
+                    valueColor: _progressValueColor,
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 15.0,
+                      top: 8.0,
+                      bottom: 8.0,
+                    ),
+                    child: Text(
+                      _message.value,
+                      textAlign: _messageTextAlign,
+                      maxLines: _messageMaxLines,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: _messageFontSize,
+                        color: _messageTextColor,
+                        fontWeight: _messageFontWeight,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

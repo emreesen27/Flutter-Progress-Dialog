@@ -17,29 +17,25 @@ class MyExample extends StatelessWidget {
 class Home extends StatelessWidget {
   _normalProgress(context) async {
     /// Create progress dialog
-    ProgressDialog pd = ProgressDialog(context: context);
+    ProgressDialog pd = ProgressDialog.indeterminate(
+      context: context,
+      barrierDismissible: true,
+      message: "Prepare Downloading...",
+      cancel: Cancel(),
+    );
 
     /// Set options
     /// Max and msg required
-    pd.show(
-      max: 100,
-      msg: 'File Downloading...',
-      progressBgColor: Colors.transparent,
-      cancel: Cancel(
-        cancelClicked: () {
-          /// ex: cancel the download
-        },
-      ),
-    );
-    for (int i = 0; i <= 100; i++) {
-      /// You don't need to update state, just pass the value.
-      /// Only value required
-      pd.update(value: i);
-      i++;
+    pd.show();
+
+    await Future.delayed(Duration(milliseconds: 1000));
+    for (int i = 0; i < 101; i++) {
+      pd.update(value: i, message: "File Downloading");
       await Future.delayed(Duration(milliseconds: 100));
     }
   }
 
+  /*
   _valuableProgress(context) async {
     ProgressDialog pd = ProgressDialog(context: context);
 
@@ -117,7 +113,7 @@ class Home extends StatelessWidget {
       await Future.delayed(Duration(milliseconds: 100));
     }
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -146,25 +142,25 @@ class Home extends StatelessWidget {
                   color: Color(0xfff7f7f7),
                   child: Text('Valuable Progress'),
                   onPressed: () {
-                    _valuableProgress(context);
+                    // _valuableProgress(context);
                   }),
               MaterialButton(
                   color: Color(0xfff7f7f7),
                   child: Text('Preparing Progress'),
                   onPressed: () {
-                    _preparingProgress(context);
+                    // _preparingProgress(context);
                   }),
               MaterialButton(
                   color: Color(0xfff7f7f7),
                   child: Text('Custom Progress'),
                   onPressed: () {
-                    _customProgress(context);
+                    // _customProgress(context);
                   }),
               MaterialButton(
                   color: Color(0xfff7f7f7),
                   child: Text('Completed Progress'),
                   onPressed: () {
-                    _completedProgress(context);
+                    // _completedProgress(context);
                   }),
             ],
           ),
