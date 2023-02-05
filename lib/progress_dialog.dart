@@ -150,7 +150,7 @@ class ProgressDialog {
       if (message == null)
         throw Exception(
             "update message cannot be empty for the indeterminate dialog!");
-      _message.value = value;
+      _message.value = message;
     }
   }
 
