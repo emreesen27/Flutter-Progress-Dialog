@@ -280,7 +280,7 @@ class ProgressDialog {
           _setDialogStatus(DialogStatus.completed);
           _completed == null
               ? close(delay: _closeWithDelay)
-              : close(delay: _completed?.completionDelay ?? 1500);
+              : close(delay: _completed!.completionDelay);
         }
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -372,10 +372,7 @@ class ProgressDialog {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (_cancel != null) ...[
-              Align(
-                alignment: Alignment.topRight,
-                child: _createCancelButton(),
-              ),
+              _createCancelButton(),
             ],
             Row(
               children: [
