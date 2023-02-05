@@ -141,8 +141,17 @@ class ProgressDialog {
   /// [update] Pass the new value to this method to update the status.
   //  Msg not required.
   void update({int? value, String? message}) {
-    if (value != null) _progress.value = value;
-    if (message != null) _message.value = message;
+    if (_progressType == ProgressType.determinate) {
+      if (value == null)
+        throw Exception(
+            "update value cannot be empty for the determinate dialog!");
+      _progress.value = value;
+    } else {
+      if (message == null)
+        throw Exception(
+            "update message cannot be empty for the indeterminate dialog!");
+      _message.value = value;
+    }
   }
 
   /// [close] Closes the progress dialog.
