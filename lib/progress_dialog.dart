@@ -34,26 +34,33 @@ class ProgressDialog {
   }
 
   /// [update] Pass the new value to this method to update the status.
-  //  Msg not required.
-  void update({required int value, String? msg}) {
-    _progress.value = value;
+  void update({int? value, String? msg}) {
+    if (value != null) _progress.value = value;
     if (msg != null) _msg.value = msg;
   }
 
   /// [close] Closes the progress dialog.
-  void close({int delay = 0}) {
+  void close({int? delay = 0}) {
+    if (delay == 0 || delay == null) {
+      _closeDialog();
+      return;
+    }
     Future.delayed(Duration(milliseconds: delay), () {
-      if (_dialogIsOpen) {
-        Navigator.pop(_context);
-        _dialogIsOpen = false;
-        _setDialogStatus(DialogStatus.closed);
-      }
+      _closeDialog();
     });
   }
 
   ///[isOpen] Returns whether the dialog box is open.
   bool isOpen() {
     return _dialogIsOpen;
+  }
+
+  void _closeDialog() {
+    if (_dialogIsOpen) {
+      Navigator.pop(_context);
+      _dialogIsOpen = false;
+      _setDialogStatus(DialogStatus.closed);
+    }
   }
 
   ///[setDialogStatus] Dialog window sets your new state.
@@ -111,29 +118,29 @@ class ProgressDialog {
   // Default (Default: 100ms)
 
   show({
-    required int max,
-    required String msg,
+    int max = 100,
+    String msg = "Default Message",
     Completed? completed,
     Cancel? cancel,
-    ProgressType progressType: ProgressType.normal,
-    ValuePosition valuePosition: ValuePosition.right,
-    Color backgroundColor: Colors.white,
-    Color barrierColor: Colors.transparent,
-    Color progressValueColor: Colors.blueAccent,
-    Color progressBgColor: Colors.blueGrey,
-    Color valueColor: Colors.black87,
-    Color msgColor: Colors.black87,
-    TextAlign msgTextAlign: TextAlign.center,
-    FontWeight msgFontWeight: FontWeight.bold,
-    FontWeight valueFontWeight: FontWeight.normal,
-    double valueFontSize: 15.0,
-    double msgFontSize: 17.0,
-    int msgMaxLines: 1,
-    double elevation: 5.0,
-    double borderRadius: 15.0,
-    bool barrierDismissible: false,
-    bool hideValue: false,
-    int closeWithDelay: 100,
+    ProgressType progressType = ProgressType.normal,
+    ValuePosition valuePosition = ValuePosition.right,
+    Color backgroundColor = Colors.white,
+    Color barrierColor = Colors.transparent,
+    Color progressValueColor = Colors.blueAccent,
+    Color progressBgColor = Colors.blueGrey,
+    Color valueColor = Colors.black87,
+    Color msgColor = Colors.black87,
+    TextAlign msgTextAlign = TextAlign.center,
+    FontWeight msgFontWeight = FontWeight.bold,
+    FontWeight valueFontWeight = FontWeight.normal,
+    double valueFontSize = 15.0,
+    double msgFontSize = 17.0,
+    int msgMaxLines = 1,
+    double elevation = 5.0,
+    double borderRadius = 15.0,
+    bool barrierDismissible = false,
+    bool hideValue = false,
+    int closeWithDelay = 100,
     ValueChanged<DialogStatus>? onStatusChanged,
   }) {
     _dialogIsOpen = true;
@@ -229,18 +236,24 @@ class ProgressDialog {
                             top: 8.0,
                             bottom: 8.0,
                           ),
-                          child: Text(
-                            value == max && completed != null
-                                ? completed.completedMsg
-                                : _msg.value,
-                            textAlign: msgTextAlign,
-                            maxLines: msgMaxLines,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: msgFontSize,
-                              color: msgColor,
-                              fontWeight: msgFontWeight,
-                            ),
+                          child: ValueListenableBuilder(
+                            valueListenable: _msg,
+                            builder: (BuildContext context, dynamic msgValue,
+                                Widget? child) {
+                              return Text(
+                                value == max && completed != null
+                                    ? completed.completedMsg
+                                    : msgValue,
+                                textAlign: msgTextAlign,
+                                maxLines: msgMaxLines,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: msgFontSize,
+                                  color: msgColor,
+                                  fontWeight: msgFontWeight,
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),

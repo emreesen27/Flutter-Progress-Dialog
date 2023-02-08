@@ -1,3 +1,8 @@
+## [1.1.3] - 08.02.2023
+* Issues 22 and 28 fix.
+* Readme edited.
+* Removed required fields in update method
+
 ## [1.1.2] - 22.01.2023
 * Auto hidden added.
 * Readme edited.
