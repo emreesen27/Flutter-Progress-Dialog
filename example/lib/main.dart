@@ -118,6 +118,41 @@ class Home extends StatelessWidget {
     }
   }
 
+  _onlyMessageProgress(context) async {
+    ProgressDialog pd = ProgressDialog(context: context);
+    pd.show(
+      barrierDismissible: true,
+      msg: "Please waiting...",
+      hideValue: true,
+    );
+
+    /** You can update the message value after a certain action **/
+    await Future.delayed(Duration(milliseconds: 1000));
+    pd.update(msg: "Almost done...");
+
+    await Future.delayed(Duration(milliseconds: 1000));
+    pd.close();
+  }
+
+  _onlyMessageWithCompletionProgress(context) async {
+    ProgressDialog pd = ProgressDialog(context: context);
+    pd.show(
+      barrierDismissible: true,
+      msg: "Please waiting...",
+      hideValue: true,
+      completed: Completed(), // Set Completed
+    );
+
+    /** You can update the message value after a certain action **/
+    await Future.delayed(Duration(milliseconds: 1000));
+
+    /**
+     * if you can't assign value and want to use completed object. You should set the Value to 100.
+     * The dialog will close automatically.
+     * **/
+    pd.update(msg: "Almost done...", value: 100);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,6 +200,18 @@ class Home extends StatelessWidget {
                   child: Text('Completed Progress'),
                   onPressed: () {
                     _completedProgress(context);
+                  }),
+              MaterialButton(
+                  color: Color(0xfff7f7f7),
+                  child: Text('Message Progress'),
+                  onPressed: () {
+                    _onlyMessageProgress(context);
+                  }),
+              MaterialButton(
+                  color: Color(0xfff7f7f7),
+                  child: Text('Message Progress With Completed'),
+                  onPressed: () {
+                    _onlyMessageWithCompletionProgress(context);
                   }),
             ],
           ),
