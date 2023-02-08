@@ -7,7 +7,7 @@ Progress dialog package for flutter
 You must add the library as a dependency to your project.
 ```yaml
 dependencies:
- sn_progress_dialog: ^1.1.2
+ sn_progress_dialog: ^1.1.3
 ```
 
 You should then run `flutter packages get`
@@ -37,16 +37,18 @@ Create Progress Dialog
 ProgressDialog pd = ProgressDialog(context: context);
 ```
 Set options
+* Both parameters are not mandatory with version 1.1.3 (max, msg)
+* Default values can be changed according to the intended use.
 
 ```dart
 pd.show(max: 100, msg: 'File Downloading...');
 ```
 
 You don't need to update state, just pass the value.
-You can also update the msg value(optional)
+- If you're not interested in showing value, you don't need to update progressValue.
  
 ```dart
-pd.update(progress value);
+pd.update(value: ProgressValue, msg: "Updated message"); 
 ```
 
 ### Completed Type
@@ -65,7 +67,7 @@ pd.update(progress value);
 
 ```dart
 cancel: Cancel() // To use with default values
-cancel: Cancel( cancelImageSize: 20.0, cancelImageColor: Colors.blue, cancelImage: AssetImage("image path"), cancelClicked: () {})
+cancel: Cancel(cancelImageSize: 20.0, cancelImageColor: Colors.blue, cancelImage: AssetImage("image path"), cancelClicked: () {})
 ```
 
 ### Dialog Status
