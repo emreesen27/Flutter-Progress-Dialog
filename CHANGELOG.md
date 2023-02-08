@@ -1,4 +1,4 @@
-## [1.1.2] - 08.02.2023
+## [1.1.3] - 08.02.2023
 * Issues 22 and 28 fix.
 * Readme edited.
 * Removed required fields in update method
