@@ -29,8 +29,13 @@ class ProgressDialog {
   // Value assignment is done later.
   ValueChanged<DialogStatus>? _onStatusChanged;
 
-  ProgressDialog({required context}) {
+  /// [_useRootNavigator] open dialog in RootNavigator
+  // Can only be accessed with the constructor.
+  late bool _useRootNavigator;
+
+  ProgressDialog({required context, bool? useRootNavigator}) {
     this._context = context;
+    this._useRootNavigator = useRootNavigator ?? true;
   }
 
   /// [update] Pass the new value to this method to update the status.
@@ -57,7 +62,7 @@ class ProgressDialog {
 
   void _closeDialog() {
     if (_dialogIsOpen) {
-      Navigator.pop(_context);
+      Navigator.of(_context, rootNavigator: _useRootNavigator).pop();
       _dialogIsOpen = false;
       _setDialogStatus(DialogStatus.closed);
     }
@@ -151,6 +156,7 @@ class ProgressDialog {
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
       context: _context,
+      useRootNavigator: _useRootNavigator,
       builder: (context) => WillPopScope(
         child: AlertDialog(
           backgroundColor: backgroundColor,
