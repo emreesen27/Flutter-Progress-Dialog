@@ -130,6 +130,7 @@ class ProgressDialog {
     ProgressType progressType = ProgressType.normal,
     ValuePosition valuePosition = ValuePosition.right,
     Color backgroundColor = Colors.white,
+    Color? surfaceTintColor,
     Color barrierColor = Colors.transparent,
     Color progressValueColor = Colors.blueAccent,
     Color progressBgColor = Colors.blueGrey,
@@ -157,8 +158,10 @@ class ProgressDialog {
       barrierColor: barrierColor,
       context: _context,
       useRootNavigator: _useRootNavigator,
-      builder: (context) => WillPopScope(
+      builder: (context) => PopScope(
+        canPop: barrierDismissible,
         child: AlertDialog(
+          surfaceTintColor: surfaceTintColor,
           backgroundColor: backgroundColor,
           elevation: elevation,
           shape: RoundedRectangleBorder(
@@ -288,11 +291,10 @@ class ProgressDialog {
             },
           ),
         ),
-        onWillPop: () {
-          if (barrierDismissible) {
+        onPopInvoked: (didPop) {
+          if (didPop) {
             _dialogIsOpen = false;
           }
-          return Future.value(barrierDismissible);
         },
       ),
     );

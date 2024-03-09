@@ -7,7 +7,7 @@ Progress dialog package for flutter
 You must add the library as a dependency to your project.
 ```yaml
 dependencies:
- sn_progress_dialog: ^1.1.3
+ sn_progress_dialog: ^1.1.4
 ```
 
 You should then run `flutter packages get`
