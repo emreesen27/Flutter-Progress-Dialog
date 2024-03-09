@@ -191,8 +191,9 @@ class ProgressDialog {
                               splashColor: Colors.transparent,
                               onTap: () {
                                 close();
-                                if (cancel.cancelClicked != null)
+                                if (cancel.cancelClicked != null) {
                                   cancel.cancelClicked!();
+                                }
                               },
                               child: Image(
                                 width: cancel.cancelImageSize,
