@@ -29,8 +29,13 @@ class ProgressDialog {
   // Value assignment is done later.
   ValueChanged<DialogStatus>? _onStatusChanged;
 
-  ProgressDialog({required context}) {
+  /// [_useRootNavigator] open dialog in RootNavigator
+  // Can only be accessed with the constructor.
+  late bool _useRootNavigator;
+
+  ProgressDialog({required context, bool? useRootNavigator}) {
     this._context = context;
+    this._useRootNavigator = useRootNavigator ?? true;
   }
 
   /// [update] Pass the new value to this method to update the status.
@@ -57,7 +62,7 @@ class ProgressDialog {
 
   void _closeDialog() {
     if (_dialogIsOpen) {
-      Navigator.pop(_context);
+      Navigator.of(_context, rootNavigator: _useRootNavigator).pop();
       _dialogIsOpen = false;
       _setDialogStatus(DialogStatus.closed);
     }
@@ -125,6 +130,7 @@ class ProgressDialog {
     ProgressType progressType = ProgressType.normal,
     ValuePosition valuePosition = ValuePosition.right,
     Color backgroundColor = Colors.white,
+    Color? surfaceTintColor,
     Color barrierColor = Colors.transparent,
     Color progressValueColor = Colors.blueAccent,
     Color progressBgColor = Colors.blueGrey,
@@ -151,8 +157,11 @@ class ProgressDialog {
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
       context: _context,
-      builder: (context) => WillPopScope(
+      useRootNavigator: _useRootNavigator,
+      builder: (context) => PopScope(
+        canPop: barrierDismissible,
         child: AlertDialog(
+          surfaceTintColor: surfaceTintColor,
           backgroundColor: backgroundColor,
           elevation: elevation,
           shape: RoundedRectangleBorder(
@@ -182,8 +191,9 @@ class ProgressDialog {
                               splashColor: Colors.transparent,
                               onTap: () {
                                 close();
-                                if (cancel.cancelClicked != null)
+                                if (cancel.cancelClicked != null) {
                                   cancel.cancelClicked!();
+                                }
                               },
                               child: Image(
                                 width: cancel.cancelImageSize,
@@ -282,11 +292,10 @@ class ProgressDialog {
             },
           ),
         ),
-        onWillPop: () {
-          if (barrierDismissible) {
+        onPopInvoked: (didPop) {
+          if (didPop) {
             _dialogIsOpen = false;
           }
-          return Future.value(barrierDismissible);
         },
       ),
     );
