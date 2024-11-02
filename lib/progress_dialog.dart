@@ -3,34 +3,15 @@ import 'package:sn_progress_dialog/options/completed.dart';
 import 'package:sn_progress_dialog/options/cancel.dart';
 
 enum ValuePosition { center, right }
-
 enum ProgressType { normal, valuable }
-
 enum DialogStatus { opened, closed, completed }
 
 class ProgressDialog {
-  /// [_progress] Listens to the value of progress.
-  //  Not directly accessible.
   final ValueNotifier _progress = ValueNotifier(0);
-
-  /// [_msg] Listens to the msg value.
-  // Value assignment is done later.
   final ValueNotifier _msg = ValueNotifier('');
-
-  /// [_dialogIsOpen] Shows whether the dialog is open.
-  //  Not directly accessible.
   bool _dialogIsOpen = false;
-
-  /// [_context] Required to show the alert.
-  // Can only be accessed with the constructor.
   late BuildContext _context;
-
-  /// [_onStatusChanged] Keeps track of the current status of the dialog window.
-  // Value assignment is done later.
   ValueChanged<DialogStatus>? _onStatusChanged;
-
-  /// [_useRootNavigator] open dialog in RootNavigator
-  // Can only be accessed with the constructor.
   late bool _useRootNavigator;
 
   ProgressDialog({required context, bool? useRootNavigator}) {
@@ -38,13 +19,11 @@ class ProgressDialog {
     this._useRootNavigator = useRootNavigator ?? true;
   }
 
-  /// [update] Pass the new value to this method to update the status.
   void update({int? value, String? msg}) {
     if (value != null) _progress.value = value;
     if (msg != null) _msg.value = msg;
   }
 
-  /// [close] Closes the progress dialog.
   void close({int? delay = 0}) {
     if (delay == 0 || delay == null) {
       _closeDialog();
@@ -55,7 +34,6 @@ class ProgressDialog {
     });
   }
 
-  ///[isOpen] Returns whether the dialog box is open.
   bool isOpen() {
     return _dialogIsOpen;
   }
@@ -68,13 +46,10 @@ class ProgressDialog {
     }
   }
 
-  ///[setDialogStatus] Dialog window sets your new state.
   void _setDialogStatus(DialogStatus status) {
     if (_onStatusChanged != null) _onStatusChanged!(status);
   }
 
-  /// [_valueProgress] Assigns progress properties and updates the value.
-  //  Not directly accessible.
   _valueProgress({Color? valueColor, Color? bgColor, required double value}) {
     return CircularProgressIndicator(
       backgroundColor: bgColor,
@@ -83,44 +58,12 @@ class ProgressDialog {
     );
   }
 
-  /// [_normalProgress] Assigns progress properties.
-  //  Not directly accessible.
   _normalProgress({Color? valueColor, Color? bgColor}) {
     return CircularProgressIndicator(
       backgroundColor: bgColor,
       valueColor: AlwaysStoppedAnimation<Color?>(valueColor),
     );
   }
-
-  /// [max] Assign the maximum value of the upload. @required
-  //  Dialog closes automatically when its progress status equals the max value.
-
-  /// [msg] Show a message @required
-
-  /// [valuePosition] Location of progress value @not required
-  // Center or right.  (Default: right)
-
-  /// [progressType] Assign the progress bar type.
-  // Normal or valuable.  (Default: normal)
-
-  /// [barrierDismissible] Determines whether the dialog closes when the back button or screen is clicked.
-  // True or False (Default: false)
-
-  /// [msgMaxLines] Use when text value doesn't fit
-  // Int (Default: 1)
-
-  /// [completed] Widgets that will be displayed when the process is completed are assigned through this class.
-  // If an assignment is not made, the dialog closes without showing anything.
-
-  /// [cancel] Use it to have a close button on the dialog.
-  // Manage other properties related to cancel button via this class.
-
-  /// [hideValue] If you are not using the progress value, you can hide it.
-  // Default (Default: false)
-
-  /// [closeWithDelay] The time the dialog window will wait to close
-  // If the dialog takes the "completion" object, the value here is ignored.
-  // Default (Default: 100ms)
 
   show({
     int max = 100,
@@ -158,8 +101,8 @@ class ProgressDialog {
       barrierColor: barrierColor,
       context: _context,
       useRootNavigator: _useRootNavigator,
-      builder: (context) => PopScope(
-        canPop: barrierDismissible,
+      builder: (context) => WillPopScope(
+        onWillPop: () async => barrierDismissible,
         child: AlertDialog(
           surfaceTintColor: surfaceTintColor,
           backgroundColor: backgroundColor,
@@ -292,11 +235,6 @@ class ProgressDialog {
             },
           ),
         ),
-        onPopInvoked: (didPop) {
-          if (didPop) {
-            _dialogIsOpen = false;
-          }
-        },
       ),
     );
   }
