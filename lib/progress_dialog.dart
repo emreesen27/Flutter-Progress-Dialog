@@ -1,50 +1,57 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:sn_progress_dialog/enums/dialog_status.dart';
+import 'package:sn_progress_dialog/enums/progress_types.dart';
+import 'package:sn_progress_dialog/enums/value_position.dart';
 import 'package:sn_progress_dialog/options/completed.dart';
 import 'package:sn_progress_dialog/options/cancel.dart';
 
-enum ValuePosition { center, right }
-
-enum ProgressType { normal, valuable }
-
-enum DialogStatus { opened, closed, completed }
-
+/// A customizable progress dialog that displays loading states and completion messages.
 class ProgressDialog {
-  /// [_progress] Listens to the value of progress.
-  //  Not directly accessible.
+  /// Listens to the current progress value.
   final ValueNotifier _progress = ValueNotifier(0);
 
-  /// [_msg] Listens to the msg value.
-  // Value assignment is done later.
+  /// Listens to the current message text.
   final ValueNotifier _msg = ValueNotifier('');
 
-  /// [_dialogIsOpen] Shows whether the dialog is open.
-  //  Not directly accessible.
+  /// Listens to the completion message.
+  final ValueNotifier<String> _completedMsg = ValueNotifier('');
+
+  /// Indicates whether the dialog is currently displayed.
   bool _dialogIsOpen = false;
 
-  /// [_context] Required to show the alert.
-  // Can only be accessed with the constructor.
+  /// The build context used to show the dialog.
   late BuildContext _context;
 
-  /// [_onStatusChanged] Keeps track of the current status of the dialog window.
-  // Value assignment is done later.
+  /// Callback triggered when dialog status changes.
   ValueChanged<DialogStatus>? _onStatusChanged;
 
-  /// [_useRootNavigator] open dialog in RootNavigator
-  // Can only be accessed with the constructor.
+  /// Whether to show dialog in root navigator.
+  /// If true, the dialog will be displayed above all other routes.
   late bool _useRootNavigator;
 
+  /// Creates a progress dialog with the given build context.
+  ///
+  /// [context] - Required build context for showing the dialog
+  /// [useRootNavigator] - Whether to show in root navigator. Defaults to true
   ProgressDialog({required context, bool? useRootNavigator}) {
     this._context = context;
     this._useRootNavigator = useRootNavigator ?? true;
   }
 
-  /// [update] Pass the new value to this method to update the status.
+  /// Updates the dialog's progress value and message.
+  ///
+  /// [value] - New progress value between 0 and max
+  /// [msg] - New message to display
   void update({int? value, String? msg}) {
     if (value != null) _progress.value = value;
     if (msg != null) _msg.value = msg;
   }
 
-  /// [close] Closes the progress dialog.
+  /// Closes the dialog with optional delay.
+  ///
+  /// [delay] - Milliseconds to wait before closing. Defaults to 0.
   void close({int? delay = 0}) {
     if (delay == 0 || delay == null) {
       _closeDialog();
@@ -55,11 +62,20 @@ class ProgressDialog {
     });
   }
 
-  ///[isOpen] Returns whether the dialog box is open.
+  /// Releases resources used by the dialog.
+  /// Should be called when the dialog is no longer needed.
+  void dispose() {
+    _progress.dispose();
+    _msg.dispose();
+    _completedMsg.dispose();
+  }
+
+  /// Returns whether the dialog is currently open.
   bool isOpen() {
     return _dialogIsOpen;
   }
 
+  /// Private method to close the dialog and update its status.
   void _closeDialog() {
     if (_dialogIsOpen) {
       Navigator.of(_context, rootNavigator: _useRootNavigator).pop();
@@ -68,13 +84,12 @@ class ProgressDialog {
     }
   }
 
-  ///[setDialogStatus] Dialog window sets your new state.
+  /// Private method to notify status change listeners.
   void _setDialogStatus(DialogStatus status) {
     if (_onStatusChanged != null) _onStatusChanged!(status);
   }
 
-  /// [_valueProgress] Assigns progress properties and updates the value.
-  //  Not directly accessible.
+  /// Creates a progress indicator with deterministic value.
   _valueProgress({Color? valueColor, Color? bgColor, required double value}) {
     return CircularProgressIndicator(
       backgroundColor: bgColor,
@@ -83,8 +98,7 @@ class ProgressDialog {
     );
   }
 
-  /// [_normalProgress] Assigns progress properties.
-  //  Not directly accessible.
+  /// Creates an indeterminate progress indicator.
   _normalProgress({Color? valueColor, Color? bgColor}) {
     return CircularProgressIndicator(
       backgroundColor: bgColor,
@@ -92,42 +106,47 @@ class ProgressDialog {
     );
   }
 
-  /// [max] Assign the maximum value of the upload. @required
-  //  Dialog closes automatically when its progress status equals the max value.
-
-  /// [msg] Show a message @required
-
-  /// [valuePosition] Location of progress value @not required
-  // Center or right.  (Default: right)
-
-  /// [progressType] Assign the progress bar type.
-  // Normal or valuable.  (Default: normal)
-
-  /// [barrierDismissible] Determines whether the dialog closes when the back button or screen is clicked.
-  // True or False (Default: false)
-
-  /// [msgMaxLines] Use when text value doesn't fit
-  // Int (Default: 1)
-
-  /// [completed] Widgets that will be displayed when the process is completed are assigned through this class.
-  // If an assignment is not made, the dialog closes without showing anything.
-
-  /// [cancel] Use it to have a close button on the dialog.
-  // Manage other properties related to cancel button via this class.
-
-  /// [hideValue] If you are not using the progress value, you can hide it.
-  // Default (Default: false)
-
-  /// [closeWithDelay] The time the dialog window will wait to close
-  // If the dialog takes the "completion" object, the value here is ignored.
-  // Default (Default: 100ms)
-
-  show({
+  /// Shows the progress dialog with customizable options.
+  ///
+  /// Parameters:
+  /// - [max] Maximum progress value (default: 100). This value determines when the progress is complete.
+  /// - [msg] Message to display (default: "Default Message"). Can be updated using [update] method.
+  /// - [completed] Configuration for completion state. Use this to customize completion message, delay, and image.
+  ///   If not provided, dialog will close immediately upon completion.
+  /// - [cancel] Configuration for cancel button. Provides options for custom image and click handling.
+  /// - [progressType] Type of progress indicator:
+  ///   * indeterminate: Shows spinning indicator
+  ///   * determinate: Shows actual progress (0-100%)
+  /// - [valuePosition] Position of progress value text (center/right). Only applies when [hideValue] is false.
+  /// - [backgroundColor] Dialog background color (default: Colors.white)
+  /// - [surfaceTintColor] Dialog surface tint color for Material 3
+  /// - [barrierColor] Color of the barrier behind the dialog (default: transparent)
+  /// - [progressValueColor] Color of the progress indicator's fill (default: blueAccent)
+  /// - [progressBgColor] Background color of the progress track (default: blueGrey)
+  /// - [valueColor] Color of the progress value text (default: black87)
+  /// - [msgColor] Color of the message text (default: black87)
+  /// - [msgTextAlign] Alignment of the message text (default: center)
+  /// - [msgFontWeight] Font weight of the message (default: bold)
+  /// - [valueFontWeight] Font weight of the progress value (default: normal)
+  /// - [valueFontSize] Font size of the progress value in logical pixels (default: 15.0)
+  /// - [msgFontSize] Font size of the message in logical pixels (default: 17.0)
+  /// - [msgMaxLines] Maximum lines for message text before ellipsis (default: 1)
+  /// - [elevation] Dialog elevation in logical pixels (default: 5.0)
+  /// - [borderRadius] Dialog corner radius in logical pixels (default: 15.0)
+  /// - [barrierDismissible] Whether clicking outside closes the dialog (default: false)
+  /// - [hideValue] Whether to hide the progress value text (default: false)
+  /// - [closeWithDelay] Delay before closing in milliseconds (default: 100)
+  ///   Note: This is ignored if [completed] is provided.
+  /// - [onStatusChanged] Callback for dialog status changes (opened/closed/completed)
+  ///
+  /// The dialog can be updated using the [update] method and closed manually using [close].
+  /// Status changes can be monitored through the [onStatusChanged] callback.
+  Future<void> show({
     int max = 100,
     String msg = "Default Message",
     Completed? completed,
     Cancel? cancel,
-    ProgressType progressType = ProgressType.normal,
+    ProgressType progressType = ProgressType.indeterminate,
     ValuePosition valuePosition = ValuePosition.right,
     Color backgroundColor = Colors.white,
     Color? surfaceTintColor,
@@ -153,6 +172,15 @@ class ProgressDialog {
     _msg.value = msg;
     _onStatusChanged = onStatusChanged;
     _setDialogStatus(DialogStatus.opened);
+
+    if (completed?.completedMsgFuture != null) {
+      completed!.completedMsgFuture!.then((newMsg) {
+        _completedMsg.value = newMsg;
+      });
+    } else if (completed != null) {
+      _completedMsg.value = completed.completedMsg;
+    }
+
     return showDialog(
       barrierDismissible: barrierDismissible,
       barrierColor: barrierColor,
@@ -223,7 +251,7 @@ class ProgressDialog {
                           : Container(
                               width: 35.0,
                               height: 35.0,
-                              child: progressType == ProgressType.normal
+                              child: progressType.isIndeterminate
                                   ? _normalProgress(
                                       bgColor: progressBgColor,
                                       valueColor: progressValueColor,
@@ -250,18 +278,23 @@ class ProgressDialog {
                             valueListenable: _msg,
                             builder: (BuildContext context, dynamic msgValue,
                                 Widget? child) {
-                              return Text(
-                                value == max && completed != null
-                                    ? completed.completedMsg
-                                    : msgValue,
-                                textAlign: msgTextAlign,
-                                maxLines: msgMaxLines,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: msgFontSize,
-                                  color: msgColor,
-                                  fontWeight: msgFontWeight,
-                                ),
+                              return ValueListenableBuilder(
+                                valueListenable: _completedMsg,
+                                builder: (context, completedMsgValue, child) {
+                                  return Text(
+                                    value == max && completed != null
+                                        ? completedMsgValue
+                                        : msgValue,
+                                    textAlign: msgTextAlign,
+                                    maxLines: msgMaxLines,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: msgFontSize,
+                                      color: msgColor,
+                                      fontWeight: msgFontWeight,
+                                    ),
+                                  );
+                                },
                               );
                             },
                           ),
@@ -295,6 +328,7 @@ class ProgressDialog {
         onPopInvoked: (didPop) {
           if (didPop) {
             _dialogIsOpen = false;
+            _setDialogStatus(DialogStatus.closed);
           }
         },
       ),

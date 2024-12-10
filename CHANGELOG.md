@@ -1,3 +1,9 @@
+## [1.2.0]- 10.12.2024
+* `completedMsgFuture` support for asynchronous completion messages
+* `dispose()` method to properly release resources
+* Deprecated old ProgressType values: normal and valuable
+
+
 ## [1.1.4] - 09.03.2024
 
 * Added support for `useRootNavigator` parameter in the `ProgressDialog` constructor.
