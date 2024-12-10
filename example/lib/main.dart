@@ -33,21 +33,19 @@ class Home extends StatelessWidget {
     );
     for (int i = 0; i <= 100; i++) {
       /// You don't need to update state, just pass the value.
-      /// Only value required
       pd.update(value: i);
       i++;
       await Future.delayed(Duration(milliseconds: 100));
     }
   }
 
+  /// Shows a progress dialog with a determinate progress bar.
   _valuableProgress(context) async {
     ProgressDialog pd = ProgressDialog(context: context);
 
     pd.show(
       max: 100,
       msg: 'File Downloading...',
-
-      /// Assign the type of progress bar.
       progressType: ProgressType.valuable,
     );
     for (int i = 0; i <= 100; i++) {
@@ -57,50 +55,46 @@ class Home extends StatelessWidget {
     }
   }
 
+  /// Shows a progress dialog that starts with a preparation message,
+  /// then switches to a downloading message.
   _preparingProgress(context) async {
     ProgressDialog pd = ProgressDialog(context: context);
 
-    /// show the state of preparation first.
     pd.show(
       max: 100,
       msg: 'Preparing Download...',
-      progressType: ProgressType.valuable,
+      progressType: ProgressType.determinate,
     );
 
-    /// Added to test late loading starts
     await Future.delayed(Duration(milliseconds: 3000));
     for (int i = 0; i <= 100; i++) {
-      /// You can indicate here that the download has started.
       pd.update(value: i, msg: 'File Downloading...');
       i++;
       await Future.delayed(Duration(milliseconds: 100));
     }
   }
 
+  /// Shows a customizable progress dialog with a dark theme.
   _customProgress(context) async {
     ProgressDialog pd = ProgressDialog(context: context);
-
-    /// show the state of preparation first.
     pd.show(
         max: 100,
         msg: 'Preparing Download...',
-        progressType: ProgressType.valuable,
+        progressType: ProgressType.determinate,
         backgroundColor: Color(0xff212121),
         progressValueColor: Color(0xff3550B4),
         progressBgColor: Colors.white70,
         msgColor: Colors.white,
         valueColor: Colors.white);
-
-    /// Added to test late loading starts
     await Future.delayed(Duration(milliseconds: 3000));
     for (int i = 0; i <= 100; i++) {
-      /// You can indicate here that the download has started.
       pd.update(value: i, msg: 'File Downloading...');
       i++;
       await Future.delayed(Duration(milliseconds: 100));
     }
   }
 
+  /// Shows a progress dialog that completes with a custom completion widget.
   _completedProgress(context) async {
     ProgressDialog pd = ProgressDialog(context: context);
     pd.show(
@@ -118,6 +112,7 @@ class Home extends StatelessWidget {
     }
   }
 
+  /// Shows a message-only progress dialog without a progress bar.
   _onlyMessageProgress(context) async {
     ProgressDialog pd = ProgressDialog(context: context);
     pd.show(
@@ -126,7 +121,6 @@ class Home extends StatelessWidget {
       hideValue: true,
     );
 
-    /** You can update the message value after a certain action **/
     await Future.delayed(Duration(milliseconds: 1000));
     pd.update(msg: "Almost done...");
 
@@ -134,23 +128,25 @@ class Home extends StatelessWidget {
     pd.close();
   }
 
+  /// Shows a message-only progress dialog that completes automatically.
   _onlyMessageWithCompletionProgress(context) async {
     ProgressDialog pd = ProgressDialog(context: context);
     pd.show(
       barrierDismissible: true,
       msg: "Please waiting...",
       hideValue: true,
-      completed: Completed(), // Set Completed
+      completed: Completed(completionDelay: 1500), // Set Completed
     );
-
-    /** You can update the message value after a certain action **/
     await Future.delayed(Duration(milliseconds: 1000));
 
+    pd.update(msg: "Almost done...");
+
+    await Future.delayed(Duration(milliseconds: 1000));
     /**
      * if you can't assign value and want to use completed object. You should set the Value to 100.
      * The dialog will close automatically.
      * **/
-    pd.update(msg: "Almost done...", value: 100);
+    pd.update(value: 100);
   }
 
   @override

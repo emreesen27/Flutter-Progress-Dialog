@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 
 class Cancel {
-  /// [cancelClicked] If you want to execute an action when the dialog is canceled, pass a void function.
-  // (Default: null)
+  /// Callback function that will be executed when cancel button is tapped.
   final GestureTapCallback? cancelClicked;
 
-  /// [cancelImage] The default does not contain any value, if the value is assigned another asset image is created.
+  /// Custom image to use for the cancel button.
+  /// If not provided, uses default cancel icon.
   final AssetImage? cancelImage;
 
-  /// [cancelImageSize] set cancel image dimensions
-  // (Default: 15.0)
+  /// Size of the cancel button image in pixels.
+  /// Defaults to 15.0.
   final double cancelImageSize;
 
-  /// [cancelImageColor] set cancel image color
-  // (Default: black)
+  /// Color to apply to the cancel button image.
+  /// Defaults to Colors.black.
   final Color? cancelImageColor;
 
-  /// [autoHidden] It hides the cancel button when value and max are equal.
-  // (Default: true)
+  /// Whether to automatically hide the cancel button when progress completes.
+  /// When true, the button will be hidden when progress value equals max value.
+  /// Defaults to true.
   final bool autoHidden;
 
   Cancel({
