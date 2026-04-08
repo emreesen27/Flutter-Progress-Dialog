@@ -88,8 +88,8 @@ class Home extends StatelessWidget {
         backgroundColor: Color(0xff212121),
         progressValueColor: Color(0xff3550B4),
         progressBgColor: Colors.white70,
-        msgColor: Colors.white,
-        valueColor: Colors.white);
+        msgStyle: TextStyle(color: Colors.white),
+        valueStyle: TextStyle(color: Colors.white));
     await Future.delayed(Duration(milliseconds: 3000));
     for (int i = 0; i <= 100; i++) {
       pd.update(value: i, msg: 'File Downloading...');

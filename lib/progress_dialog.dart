@@ -149,18 +149,14 @@ class ProgressDialog {
     Cancel? cancel,
     ProgressType progressType = ProgressType.indeterminate,
     ValuePosition valuePosition = ValuePosition.right,
-    Color backgroundColor = Colors.white,
+    Color? backgroundColor,
     Color? surfaceTintColor,
-    Color barrierColor = Colors.transparent,
-    Color progressValueColor = Colors.blueAccent,
-    Color progressBgColor = Colors.blueGrey,
-    Color valueColor = Colors.black87,
-    Color msgColor = Colors.black87,
+    Color? barrierColor,
+    Color? progressValueColor,
+    Color? progressBgColor,
+    TextStyle? valueStyle,
+    TextStyle? msgStyle,
     TextAlign msgTextAlign = TextAlign.center,
-    FontWeight msgFontWeight = FontWeight.bold,
-    FontWeight valueFontWeight = FontWeight.normal,
-    double valueFontSize = 15.0,
-    double msgFontSize = 17.0,
     int msgMaxLines = 1,
     double elevation = 5.0,
     double borderRadius = 15.0,
@@ -289,11 +285,7 @@ class ProgressDialog {
                                     textAlign: msgTextAlign,
                                     maxLines: msgMaxLines,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: msgFontSize,
-                                      color: msgColor,
-                                      fontWeight: msgFontWeight,
-                                    ),
+                                    style: msgStyle,
                                   );
                                 },
                               );
@@ -309,16 +301,12 @@ class ProgressDialog {
                               ? Alignment.bottomRight
                               : Alignment.bottomCenter,
                           child: Text(
-                            value <= 0 ? '' : '${_progress.value}/$max',
-                            style: TextStyle(
-                              fontSize: valueFontSize,
-                              color: valueColor,
-                              fontWeight: valueFontWeight,
-                              decoration: value == max
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none,
-                            ),
-                          ),
+                              value <= 0 ? '' : '${_progress.value}/$max',
+                              style: (valueStyle ?? TextStyle(inherit: true))
+                                  .copyWith(
+                                      decoration: value == max
+                                          ? TextDecoration.lineThrough
+                                          : TextDecoration.none)),
                         )
                       : SizedBox.shrink()
                 ],
