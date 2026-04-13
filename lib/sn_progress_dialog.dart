@@ -1,9 +1,9 @@
-library sn_progress_dialog;
+library;
 
 /// Exporting package files
-export 'progress_dialog.dart';
-export 'options/completed.dart';
-export 'options/cancel.dart';
-export 'enums/progress_types.dart';
 export 'enums/dialog_status.dart';
+export 'enums/progress_types.dart';
 export 'enums/value_position.dart';
+export 'options/cancel.dart';
+export 'options/completed.dart';
+export 'progress_dialog.dart';

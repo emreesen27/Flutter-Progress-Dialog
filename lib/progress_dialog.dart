@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:sn_progress_dialog/enums/dialog_status.dart';
 import 'package:sn_progress_dialog/enums/progress_types.dart';
 import 'package:sn_progress_dialog/enums/value_position.dart';
-import 'package:sn_progress_dialog/options/completed.dart';
 import 'package:sn_progress_dialog/options/cancel.dart';
+import 'package:sn_progress_dialog/options/completed.dart';
 
 /// A customizable progress dialog that displays loading states and completion messages.
 class ProgressDialog {
@@ -22,23 +22,22 @@ class ProgressDialog {
   bool _dialogIsOpen = false;
 
   /// The build context used to show the dialog.
-  late BuildContext _context;
+  final BuildContext _context;
 
   /// Callback triggered when dialog status changes.
   ValueChanged<DialogStatus>? _onStatusChanged;
 
   /// Whether to show dialog in root navigator.
   /// If true, the dialog will be displayed above all other routes.
-  late bool _useRootNavigator;
+  final bool _useRootNavigator;
 
   /// Creates a progress dialog with the given build context.
   ///
   /// [context] - Required build context for showing the dialog
   /// [useRootNavigator] - Whether to show in root navigator. Defaults to true
-  ProgressDialog({required context, bool? useRootNavigator}) {
-    this._context = context;
-    this._useRootNavigator = useRootNavigator ?? true;
-  }
+  ProgressDialog({required BuildContext context, bool? useRootNavigator})
+      : _context = context,
+        _useRootNavigator = useRootNavigator ?? true;
 
   /// Updates the dialog's progress value and message.
   ///
@@ -90,7 +89,8 @@ class ProgressDialog {
   }
 
   /// Creates a progress indicator with deterministic value.
-  _valueProgress({Color? valueColor, Color? bgColor, required double value}) {
+  CircularProgressIndicator _valueProgress(
+      {Color? valueColor, Color? bgColor, required double value}) {
     return CircularProgressIndicator(
       backgroundColor: bgColor,
       valueColor: AlwaysStoppedAnimation<Color?>(valueColor),
@@ -99,7 +99,8 @@ class ProgressDialog {
   }
 
   /// Creates an indeterminate progress indicator.
-  _normalProgress({Color? valueColor, Color? bgColor}) {
+  CircularProgressIndicator _normalProgress(
+      {Color? valueColor, Color? bgColor}) {
     return CircularProgressIndicator(
       backgroundColor: bgColor,
       valueColor: AlwaysStoppedAnimation<Color?>(valueColor),
@@ -148,18 +149,14 @@ class ProgressDialog {
     Cancel? cancel,
     ProgressType progressType = ProgressType.indeterminate,
     ValuePosition valuePosition = ValuePosition.right,
-    Color backgroundColor = Colors.white,
+    Color? backgroundColor,
     Color? surfaceTintColor,
-    Color barrierColor = Colors.transparent,
-    Color progressValueColor = Colors.blueAccent,
-    Color progressBgColor = Colors.blueGrey,
-    Color valueColor = Colors.black87,
-    Color msgColor = Colors.black87,
+    Color? barrierColor,
+    Color? progressValueColor,
+    Color? progressBgColor,
+    TextStyle? valueStyle,
+    TextStyle? msgStyle,
     TextAlign msgTextAlign = TextAlign.center,
-    FontWeight msgFontWeight = FontWeight.bold,
-    FontWeight valueFontWeight = FontWeight.normal,
-    double valueFontSize = 15.0,
-    double msgFontSize = 17.0,
     int msgMaxLines = 1,
     double elevation = 5.0,
     double borderRadius = 15.0,
@@ -248,7 +245,7 @@ class ProgressDialog {
                                     package: "sn_progress_dialog",
                                   ),
                             )
-                          : Container(
+                          : SizedBox(
                               width: 35.0,
                               height: 35.0,
                               child: progressType.isIndeterminate
@@ -288,11 +285,7 @@ class ProgressDialog {
                                     textAlign: msgTextAlign,
                                     maxLines: msgMaxLines,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: msgFontSize,
-                                      color: msgColor,
-                                      fontWeight: msgFontWeight,
-                                    ),
+                                    style: msgStyle,
                                   );
                                 },
                               );
@@ -304,20 +297,16 @@ class ProgressDialog {
                   ),
                   hideValue == false
                       ? Align(
-                          child: Text(
-                            value <= 0 ? '' : '${_progress.value}/$max',
-                            style: TextStyle(
-                              fontSize: valueFontSize,
-                              color: valueColor,
-                              fontWeight: valueFontWeight,
-                              decoration: value == max
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none,
-                            ),
-                          ),
                           alignment: valuePosition == ValuePosition.right
                               ? Alignment.bottomRight
                               : Alignment.bottomCenter,
+                          child: Text(
+                              value <= 0 ? '' : '${_progress.value}/$max',
+                              style: (valueStyle ?? TextStyle(inherit: true))
+                                  .copyWith(
+                                      decoration: value == max
+                                          ? TextDecoration.lineThrough
+                                          : TextDecoration.none)),
                         )
                       : SizedBox.shrink()
                 ],
@@ -325,7 +314,7 @@ class ProgressDialog {
             },
           ),
         ),
-        onPopInvoked: (didPop) {
+        onPopInvokedWithResult: (didPop, result) {
           if (didPop) {
             _dialogIsOpen = false;
             _setDialogStatus(DialogStatus.closed);
