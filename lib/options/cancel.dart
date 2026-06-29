@@ -13,7 +13,6 @@ class Cancel {
   final double cancelImageSize;
 
   /// Color to apply to the cancel button image.
-  /// Defaults to Colors.black.
   final Color? cancelImageColor;
 
   /// Whether to automatically hide the cancel button when progress completes.
@@ -25,7 +24,7 @@ class Cancel {
     this.cancelClicked,
     this.cancelImage,
     this.cancelImageSize = 15.0,
-    this.cancelImageColor = Colors.black,
+    this.cancelImageColor,
     this.autoHidden = true,
   });
 }
