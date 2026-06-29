@@ -7,7 +7,7 @@ Progress dialog package for flutter
 You must add the library as a dependency to your project.
 ```yaml
 dependencies:
- sn_progress_dialog: ^1.2.0
+ sn_progress_dialog: ^2.0.0
 ```
 
 You should then run `flutter packages get`
@@ -18,7 +18,7 @@ Now in your Dart code, you can use:
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 ```
 
- Normal Progress          |  Valuable Progress
+ Indeterminate Progress          |  Determinate Progress
 :-------------------------:|:-------------------------:
 ![](https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/normal.gif?raw=true) | ![](https://github.com/emreesen27/Flutter-Progress-Dialog/blob/assets/valuable.gif?raw=true)
 

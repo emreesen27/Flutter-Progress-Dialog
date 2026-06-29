@@ -119,19 +119,16 @@ class ProgressDialog {
   ///   * indeterminate: Shows spinning indicator
   ///   * determinate: Shows actual progress (0-100%)
   /// - [valuePosition] Position of progress value text (center/right). Only applies when [hideValue] is false.
-  /// - [backgroundColor] Dialog background color (default: Colors.white)
+  /// - [backgroundColor] Dialog background color
   /// - [surfaceTintColor] Dialog surface tint color for Material 3
-  /// - [barrierColor] Color of the barrier behind the dialog (default: transparent)
-  /// - [progressValueColor] Color of the progress indicator's fill (default: blueAccent)
-  /// - [progressBgColor] Background color of the progress track (default: blueGrey)
-  /// - [valueColor] Color of the progress value text (default: black87)
-  /// - [msgColor] Color of the message text (default: black87)
+  /// - [barrierColor] Color of the barrier behind the dialog
+  /// - [progressValueColor] Color of the progress indicator's fill
+  /// - [progressBgColor] Background color of the progress track
+  /// - [valueColor] Color of the progress value text
   /// - [msgTextAlign] Alignment of the message text (default: center)
-  /// - [msgFontWeight] Font weight of the message (default: bold)
-  /// - [valueFontWeight] Font weight of the progress value (default: normal)
-  /// - [valueFontSize] Font size of the progress value in logical pixels (default: 15.0)
-  /// - [msgFontSize] Font size of the message in logical pixels (default: 17.0)
   /// - [msgMaxLines] Maximum lines for message text before ellipsis (default: 1)
+  /// - [valueStyle] Text style applied to the progress value text
+  /// - [msgStyle] Text style applied to the [msg] text
   /// - [elevation] Dialog elevation in logical pixels (default: 5.0)
   /// - [borderRadius] Dialog corner radius in logical pixels (default: 15.0)
   /// - [barrierDismissible] Whether clicking outside closes the dialog (default: false)

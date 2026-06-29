@@ -19,7 +19,7 @@ class MyExample extends StatelessWidget {
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
-  Future<void> _normalProgress(dynamic context) async {
+  Future<void> _indeterminateProgress(dynamic context) async {
     /// Create progress dialog
     ProgressDialog pd = ProgressDialog(context: context);
 
@@ -44,7 +44,7 @@ class Home extends StatelessWidget {
   }
 
   /// Shows a progress dialog with a determinate progress bar.
-  Future<void> _valuableProgress(dynamic context) async {
+  Future<void> _determinateProgress(dynamic context) async {
     ProgressDialog pd = ProgressDialog(context: context);
 
     pd.show(
@@ -172,15 +172,15 @@ class Home extends StatelessWidget {
             ),
             MaterialButton(
                 color: Color(0xfff7f7f7),
-                child: Text('Normal Progress'),
+                child: Text('Indeterminate Progress'),
                 onPressed: () {
-                  _normalProgress(context);
+                  _indeterminateProgress(context);
                 }),
             MaterialButton(
                 color: Color(0xfff7f7f7),
-                child: Text('Valuable Progress'),
+                child: Text('Determinate Progress'),
                 onPressed: () {
-                  _valuableProgress(context);
+                  _determinateProgress(context);
                 }),
             MaterialButton(
                 color: Color(0xfff7f7f7),
