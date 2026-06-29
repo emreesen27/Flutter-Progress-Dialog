@@ -4,7 +4,7 @@
 * **BREAKING:** Color parameters are now nullable and fall back to theme defaults instead of hardcoded values. Thanks to Nico Mexis.
 * Updated dependencies and modernized the project structure. Thanks to Nico Mexis.
 
-### [1.2.0]- 10.12.2024
+### [1.2.0] - 10.12.2024
 * `completedMsgFuture` support for asynchronous completion messages
 * `dispose()` method to properly release resources
 * Deprecated old ProgressType values: normal and valuable
