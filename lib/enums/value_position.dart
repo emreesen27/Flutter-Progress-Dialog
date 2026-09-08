@@ -4,5 +4,5 @@ enum ValuePosition {
   center,
 
   /// Right aligned progress value
-  right
+  right,
 }

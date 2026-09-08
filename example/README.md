@@ -1,7 +1,7 @@
 # Sn Progress Dialog Example
 
 ```dart
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 
 void main() {

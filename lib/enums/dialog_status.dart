@@ -7,5 +7,5 @@ enum DialogStatus {
   closed,
 
   /// Dialog has completed its progress
-  completed
+  completed,
 }
