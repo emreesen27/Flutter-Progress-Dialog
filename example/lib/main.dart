@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
 
 void main() {
@@ -6,18 +6,16 @@ void main() {
 }
 
 class MyExample extends StatelessWidget {
-  const MyExample({Key? key}) : super(key: key);
+  const MyExample({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Home(),
-    );
+    return MaterialApp(home: Home());
   }
 }
 
 class Home extends StatelessWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({super.key});
 
   Future<void> _indeterminateProgress(dynamic context) async {
     /// Create progress dialog
@@ -82,14 +80,15 @@ class Home extends StatelessWidget {
   Future<void> _customProgress(dynamic context) async {
     ProgressDialog pd = ProgressDialog(context: context);
     pd.show(
-        max: 100,
-        msg: 'Preparing Download...',
-        progressType: ProgressType.determinate,
-        backgroundColor: Color(0xff212121),
-        progressValueColor: Color(0xff3550B4),
-        progressBgColor: Colors.white70,
-        msgStyle: TextStyle(color: Colors.white),
-        valueStyle: TextStyle(color: Colors.white));
+      max: 100,
+      msg: 'Preparing Download...',
+      progressType: ProgressType.determinate,
+      backgroundColor: Color(0xff212121),
+      progressValueColor: Color(0xff3550B4),
+      progressBgColor: Colors.white70,
+      msgStyle: TextStyle(color: Colors.white),
+      valueStyle: TextStyle(color: Colors.white),
+    );
     await Future.delayed(Duration(milliseconds: 3000));
     for (int i = 0; i <= 100; i++) {
       pd.update(value: i, msg: 'File Downloading...');
@@ -164,54 +163,58 @@ class Home extends StatelessWidget {
               padding: const EdgeInsets.all(20.0),
               child: Text(
                 'Sn Progress Example',
-                style: TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
               ),
             ),
             MaterialButton(
-                color: Color(0xfff7f7f7),
-                child: Text('Indeterminate Progress'),
-                onPressed: () {
-                  _indeterminateProgress(context);
-                }),
+              color: Color(0xfff7f7f7),
+              child: Text('Indeterminate Progress'),
+              onPressed: () {
+                _indeterminateProgress(context);
+              },
+            ),
             MaterialButton(
-                color: Color(0xfff7f7f7),
-                child: Text('Determinate Progress'),
-                onPressed: () {
-                  _determinateProgress(context);
-                }),
+              color: Color(0xfff7f7f7),
+              child: Text('Determinate Progress'),
+              onPressed: () {
+                _determinateProgress(context);
+              },
+            ),
             MaterialButton(
-                color: Color(0xfff7f7f7),
-                child: Text('Preparing Progress'),
-                onPressed: () {
-                  _preparingProgress(context);
-                }),
+              color: Color(0xfff7f7f7),
+              child: Text('Preparing Progress'),
+              onPressed: () {
+                _preparingProgress(context);
+              },
+            ),
             MaterialButton(
-                color: Color(0xfff7f7f7),
-                child: Text('Custom Progress'),
-                onPressed: () {
-                  _customProgress(context);
-                }),
+              color: Color(0xfff7f7f7),
+              child: Text('Custom Progress'),
+              onPressed: () {
+                _customProgress(context);
+              },
+            ),
             MaterialButton(
-                color: Color(0xfff7f7f7),
-                child: Text('Completed Progress'),
-                onPressed: () {
-                  _completedProgress(context);
-                }),
+              color: Color(0xfff7f7f7),
+              child: Text('Completed Progress'),
+              onPressed: () {
+                _completedProgress(context);
+              },
+            ),
             MaterialButton(
-                color: Color(0xfff7f7f7),
-                child: Text('Message Progress'),
-                onPressed: () {
-                  _onlyMessageProgress(context);
-                }),
+              color: Color(0xfff7f7f7),
+              child: Text('Message Progress'),
+              onPressed: () {
+                _onlyMessageProgress(context);
+              },
+            ),
             MaterialButton(
-                color: Color(0xfff7f7f7),
-                child: Text('Message Progress With Completed'),
-                onPressed: () {
-                  _onlyMessageWithCompletionProgress(context);
-                }),
+              color: Color(0xfff7f7f7),
+              child: Text('Message Progress With Completed'),
+              onPressed: () {
+                _onlyMessageWithCompletionProgress(context);
+              },
+            ),
           ],
         ),
       ),

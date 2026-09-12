@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:sn_progress_dialog/enums/dialog_status.dart';
 import 'package:sn_progress_dialog/enums/progress_types.dart';
 import 'package:sn_progress_dialog/enums/value_position.dart';
@@ -33,11 +33,10 @@ class ProgressDialog {
 
   /// Creates a progress dialog with the given build context.
   ///
-  /// [context] - Required build context for showing the dialog
+  /// [_context] - Required build context for showing the dialog
   /// [useRootNavigator] - Whether to show in root navigator. Defaults to true
-  ProgressDialog({required BuildContext context, bool? useRootNavigator})
-      : _context = context,
-        _useRootNavigator = useRootNavigator ?? true;
+  ProgressDialog({required this._context, bool? useRootNavigator})
+    : _useRootNavigator = useRootNavigator ?? true;
 
   /// Updates the dialog's progress value and message.
   ///
@@ -89,8 +88,11 @@ class ProgressDialog {
   }
 
   /// Creates a progress indicator with deterministic value.
-  CircularProgressIndicator _valueProgress(
-      {Color? valueColor, Color? bgColor, required double value}) {
+  CircularProgressIndicator _valueProgress({
+    Color? valueColor,
+    Color? bgColor,
+    required double value,
+  }) {
     return CircularProgressIndicator(
       backgroundColor: bgColor,
       valueColor: AlwaysStoppedAnimation<Color?>(valueColor),
@@ -99,8 +101,10 @@ class ProgressDialog {
   }
 
   /// Creates an indeterminate progress indicator.
-  CircularProgressIndicator _normalProgress(
-      {Color? valueColor, Color? bgColor}) {
+  CircularProgressIndicator _normalProgress({
+    Color? valueColor,
+    Color? bgColor,
+  }) {
     return CircularProgressIndicator(
       backgroundColor: bgColor,
       valueColor: AlwaysStoppedAnimation<Color?>(valueColor),
@@ -187,9 +191,7 @@ class ProgressDialog {
           backgroundColor: backgroundColor,
           elevation: elevation,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(borderRadius),
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
           ),
           content: ValueListenableBuilder(
             valueListenable: _progress,
@@ -221,7 +223,8 @@ class ProgressDialog {
                                 width: cancel.cancelImageSize,
                                 height: cancel.cancelImageSize,
                                 color: cancel.cancelImageColor,
-                                image: cancel.cancelImage ??
+                                image:
+                                    cancel.cancelImage ??
                                     AssetImage(
                                       "images/cancel.png",
                                       package: "sn_progress_dialog",
@@ -236,7 +239,8 @@ class ProgressDialog {
                           ? Image(
                               width: 40,
                               height: 40,
-                              image: completed.completedImage ??
+                              image:
+                                  completed.completedImage ??
                                   AssetImage(
                                     "images/completed.png",
                                     package: "sn_progress_dialog",
@@ -251,15 +255,15 @@ class ProgressDialog {
                                       valueColor: progressValueColor,
                                     )
                                   : value == 0
-                                      ? _normalProgress(
-                                          bgColor: progressBgColor,
-                                          valueColor: progressValueColor,
-                                        )
-                                      : _valueProgress(
-                                          valueColor: progressValueColor,
-                                          bgColor: progressBgColor,
-                                          value: (value / max) * 100,
-                                        ),
+                                  ? _normalProgress(
+                                      bgColor: progressBgColor,
+                                      valueColor: progressValueColor,
+                                    )
+                                  : _valueProgress(
+                                      valueColor: progressValueColor,
+                                      bgColor: progressBgColor,
+                                      value: (value / max) * 100,
+                                    ),
                             ),
                       Expanded(
                         child: Padding(
@@ -270,23 +274,28 @@ class ProgressDialog {
                           ),
                           child: ValueListenableBuilder(
                             valueListenable: _msg,
-                            builder: (BuildContext context, dynamic msgValue,
-                                Widget? child) {
-                              return ValueListenableBuilder(
-                                valueListenable: _completedMsg,
-                                builder: (context, completedMsgValue, child) {
-                                  return Text(
-                                    value == max && completed != null
-                                        ? completedMsgValue
-                                        : msgValue,
-                                    textAlign: msgTextAlign,
-                                    maxLines: msgMaxLines,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: msgStyle,
+                            builder:
+                                (
+                                  BuildContext context,
+                                  dynamic msgValue,
+                                  Widget? child,
+                                ) {
+                                  return ValueListenableBuilder(
+                                    valueListenable: _completedMsg,
+                                    builder:
+                                        (context, completedMsgValue, child) {
+                                          return Text(
+                                            value == max && completed != null
+                                                ? completedMsgValue
+                                                : msgValue,
+                                            textAlign: msgTextAlign,
+                                            maxLines: msgMaxLines,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: msgStyle,
+                                          );
+                                        },
                                   );
                                 },
-                              );
-                            },
                           ),
                         ),
                       ),
@@ -298,14 +307,16 @@ class ProgressDialog {
                               ? Alignment.bottomRight
                               : Alignment.bottomCenter,
                           child: Text(
-                              value <= 0 ? '' : '${_progress.value}/$max',
-                              style: (valueStyle ?? TextStyle(inherit: true))
-                                  .copyWith(
-                                      decoration: value == max
-                                          ? TextDecoration.lineThrough
-                                          : TextDecoration.none)),
+                            value <= 0 ? '' : '${_progress.value}/$max',
+                            style: (valueStyle ?? TextStyle(inherit: true))
+                                .copyWith(
+                                  decoration: value == max
+                                      ? TextDecoration.lineThrough
+                                      : TextDecoration.none,
+                                ),
+                          ),
                         )
-                      : SizedBox.shrink()
+                      : SizedBox.shrink(),
                 ],
               );
             },
